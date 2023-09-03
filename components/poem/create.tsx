@@ -43,14 +43,14 @@ export default function CreatePoem() {
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         ></textarea>
         <div>
-          {content?.split("\n")?.map(function (e: string) {
+          {content?.split("\n")?.map(function (e: string, index) {
 
-            return <Line text={e}/>
+            return <Line key={index} index={index} text={e}/>
 
           })}
         </div>
         <button className="btn border-black border" disabled> add a stanza </button>
-        <button className="btn border-black border" disabled> post </button>
+        <button className="btn border-black border rounded-full" disabled> post </button>
       </div>
     </form>
   );
