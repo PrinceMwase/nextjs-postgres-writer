@@ -49,7 +49,7 @@ export default function CreatePoem() {
 
           })}
         </div>
-        <button className="btn border-black border" disabled> add a stanza </button>
+        <button className="btn border-black border" disabled> Preview</button>
         <button className="btn border-black border rounded-full" disabled> post </button>
       </div>
     </form>

@@ -5,7 +5,11 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'zapf': ['"Zapf Chancery"', 'cursive'], // use the same name as in the @import rule
+      },
+    },
   },
   plugins: [],
 };
