@@ -1,9 +1,15 @@
 import { DragEvent, useState } from "react";
 
-export default function Line({ text, index, confirm }: { text: string; index: number, confirm: boolean }) {
+type LineType = {
+  text: string;
+  index: number;
+  confirm: boolean;
+  theme: "light" | "dark";
+};
 
+export default function Line({ text, index, confirm, theme }: LineType) {
   // line color
-  const [color, setColor] = useState("#000000");
+  const [color, setColor] = useState(theme == "light" ? "#000000" : "#ffffff");
 
   //line alignment
   const [align, setAlign] = useState<"left" | "right" | "center">("center");
@@ -19,19 +25,26 @@ export default function Line({ text, index, confirm }: { text: string; index: nu
 
   return (
     <div>
-      <p style={{ color, textAlign: align }} className="text-lg font-medium font-zapf hover:translate-y-1 hover:translate-x-2 ">
-        {!confirm && <span className="cursor-pointer" onClick={() => handleAlign("left")}>
-          {" "}
-          &lt;{" "}
-        </span>}
-        {!confirm && <label
-          className="rounded-full border cursor-pointer font-sans"
-          style={{ color, backgroundColor: color }}
-          htmlFor={`${index}line${align}`}
-        >
-          {" "}
-          ++
-        </label>}
+      <p
+        style={{ color, textAlign: align }}
+        className="text-lg font-light font-zapf"
+      >
+        {!confirm && (
+          <span className="cursor-pointer" onClick={() => handleAlign("left")}>
+            {" "}
+            &lt;{" "}
+          </span>
+        )}
+        {!confirm && (
+          <label
+            className="rounded-full border cursor-pointer font-sans"
+            style={{ color, backgroundColor: color }}
+            htmlFor={`${index}line${align}`}
+          >
+            {" "}
+            ++
+          </label>
+        )}
         <input
           type="color"
           id={`${index}line${align}`}
@@ -41,10 +54,12 @@ export default function Line({ text, index, confirm }: { text: string; index: nu
           onChange={(e) => setColor(e.currentTarget.value)}
         />{" "}
         {text}{" "}
-        {!confirm && <span className="cursor-pointer" onClick={() => handleAlign("right")}>
-          {" "}
-          &gt;{" "}
-        </span>}
+        {!confirm && (
+          <span className="cursor-pointer" onClick={() => handleAlign("right")}>
+            {" "}
+            &gt;{" "}
+          </span>
+        )}
       </p>
     </div>
   );
