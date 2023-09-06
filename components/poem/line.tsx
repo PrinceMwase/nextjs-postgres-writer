@@ -29,7 +29,7 @@ export default function Line({ text='', index=0, confirm=false, theme="light"}: 
   const [color, setColor] = useState(theme == "light" ? "#000000" : "#ffffff");
 
   //line alignment
-  const [align, setAlign] = useState<"left" | "right" | "center">("center");
+  const [align, setAlign] = useState<"left" | "right" | "center">("left");
 
   //set alignment
   const handleAlign = (position: "left" | "right") => {
@@ -48,21 +48,24 @@ export default function Line({ text='', index=0, confirm=false, theme="light"}: 
         className="text-lg font-light font-zapf"
       >
         {!confirm && (
-          <span className="cursor-pointer" onClick={() => handleAlign("left")}>
-            {" "}
-            &lt;{" "}
+          <>
+          <span className="cursor-pointer mx-2" onClick={() => handleAlign("left")}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 inline h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5" />
+</svg>
+
+
           </span>
+          <span className="cursor-pointer mx-2" onClick={() => handleAlign("right")}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 inline h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
+</svg>
+
+          </span>
+          </>
+          
         )}
-        {!confirm && (
-          <label
-            className="rounded-full border cursor-pointer font-sans"
-            style={{ color, backgroundColor: color }}
-            htmlFor={`${index}line${align}`}
-          >
-            {" "}
-            ++
-          </label>
-        )}
+       
         <input
           type="color"
           id={`${index}line${align}`}
@@ -73,10 +76,14 @@ export default function Line({ text='', index=0, confirm=false, theme="light"}: 
         />{" "}
         {text}{" "}
         {!confirm && (
-          <span className="cursor-pointer" onClick={() => handleAlign("right")}>
+          <label
+            className="rounded-full border m-2 cursor-pointer font-sans"
+            style={{ color, backgroundColor: color }}
+            htmlFor={`${index}line${align}`}
+          >
             {" "}
-            &gt;{" "}
-          </span>
+            ++
+          </label>
         )}
       </p>
     </div>

@@ -10,6 +10,7 @@ type payload = {
     background: "light" | "dark";
     lines: LineProperty[];
     title: string;
+    date: Date;
   };
 
 export async function GET(re: Request){
@@ -27,7 +28,8 @@ export async function GET(re: Request){
             retrievedPayload.push({
                 title: value.title,
                 background: value.background == "dark" || value.background == "light"  ? value.background : "light",
-                lines: content
+                lines: content,
+                date: value.createdAt
             })
         })
         
