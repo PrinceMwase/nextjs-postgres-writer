@@ -11,13 +11,26 @@ type payload = {
     lines: LineProperty[];
     title: string;
     date: Date;
+    writer: string;
   };
 
 export async function GET(re: Request){
 
     let retrievedPayload: payload[] = [];
 
-    const results = await prisma.poem.findMany();
+    const results = await prisma.poem.findMany({
+      select:{
+        content: true,
+        title: true,
+        background: true,
+        createdAt: true,
+        writer:{
+          select: {
+            username: true
+          }
+        }
+      }
+    });
 
     if(results){
         results.forEach((value)=>{
@@ -29,7 +42,8 @@ export async function GET(re: Request){
                 title: value.title,
                 background: value.background == "dark" || value.background == "light"  ? value.background : "light",
                 lines: content,
-                date: value.createdAt
+                date: value.createdAt,
+                writer: value.writer.username
             })
         })
         

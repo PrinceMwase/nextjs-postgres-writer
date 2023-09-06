@@ -1,3 +1,12 @@
 {
-    "nuxt.isNuxtApp": false
+    "nuxt.isNuxtApp": false,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "vs",
+            "connectString": "postgresql://postgres:root@localhost:5432/writers"
+        }
+    ]
 }

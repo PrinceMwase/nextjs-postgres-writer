@@ -17,29 +17,29 @@ model User {
   id       Int       @id @default(autoincrement())
   email    String    @unique
   password String
-  writer   writer[]
+  writer   Writer[]
+}
+
+model Writer {
+  id       Int       @id @default(autoincrement())
+  username String    @unique
+  userId   Int
+  user     User      @relation(fields: [userId], references: [id])
   Poem     Poem[]
   Comment  Comment[]
 }
 
-model writer {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  userId   Int
-  user     User   @relation(fields: [userId], references: [id])
-}
-
 // A model for a poem
 model Poem {
-  id        Int       @id @default(autoincrement()) // The unique identifier for a poem
-  title     String // The title of the poem
-  content   Json // The content of the poem
+  id         Int       @id @default(autoincrement()) // The unique identifier for a poem
+  title      String // The title of the poem
+  content    Json // The content of the poem
   background String
-  createdAt DateTime  @default(now()) // The date and time when the poem was created
-  updatedAt DateTime  @updatedAt // The date and time when the poem was last updated
-  author    User      @relation(fields: [authorId], references: [id]) // The user who wrote the poem
-  authorId  Int // The foreign key for the author
-  comments  Comment[] // The comments on the poem
+  createdAt  DateTime  @default(now()) // The date and time when the poem was created
+  updatedAt  DateTime  @updatedAt // The date and time when the poem was last updated
+  writer     Writer    @relation(fields: [writerId], references: [id]) // The user who wrote the poem
+  writerId   Int // The foreign key for the author
+  comments   Comment[] // The comments on the poem
 }
 
 // A model for a comment
@@ -48,8 +48,8 @@ model Comment {
   content   String // The content of the comment
   createdAt DateTime @default(now()) // The date and time when the comment was created
   updatedAt DateTime @updatedAt // The date and time when the comment was last updated
-  author    User     @relation(fields: [authorId], references: [id]) // The user who made the comment
-  authorId  Int // The foreign key for the author
+  writer    Writer   @relation(fields: [writerId], references: [id]) // The user who made the comment
+  writerId  Int // The foreign key for the author
   poem      Poem     @relation(fields: [poemId], references: [id]) // The poem that the comment belongs to
-  poemId    Int // The foreign key for the poem
+  poemId    Int 
 }

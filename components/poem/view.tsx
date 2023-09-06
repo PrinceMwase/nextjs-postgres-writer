@@ -13,6 +13,7 @@ type payload = {
   lines: LineProperty[];
   title: string;
   date: Date;
+  writer:  String;
 };
 export default function ViewPoem(Payload:any ) {
   const myPayload: payload =  Payload.payload;
@@ -44,7 +45,7 @@ export default function ViewPoem(Payload:any ) {
             className="flex items-center no-underline hover:underline text-white"
             href="#"
           >
-            <p className="ml-2 text-sm">Author Name</p>
+            <p className="ml-2 text-sm">{myPayload.writer}</p>
           </a>
           <a className="no-underline text-white hover:text-red-dark" href="#">
             <span className="hidden">Like</span>

@@ -16,6 +16,17 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Missing username or password");
         }
         const user = await prisma.user.findUnique({
+          select:{
+            id: true,
+            email:true,
+            password: true,
+            writer:{
+              select:{
+                id: true,
+                username: true
+              }
+            }
+          },
           where: {
             email,
           },
