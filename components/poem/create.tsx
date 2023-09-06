@@ -9,14 +9,15 @@ type LineProperty = {
   color: string;
 };
 
-type payload = {
+export type payload = {
   background: "light" | "dark";
   lines: LineProperty[];
   title: string;
 };
 
 export default function CreatePoem() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [loading, setLoading] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [content, setContent] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [preview, setPreview] = useState<boolean>(false);
@@ -31,6 +32,7 @@ export default function CreatePoem() {
       onSubmit={(e: FormEvent) => {
         
         e.preventDefault();
+        setLoading(true);
 
         const lines = content?.split("\n");
 
@@ -75,7 +77,12 @@ export default function CreatePoem() {
         ).then( async(res)=>{
           if(res.status === 200){
             toast.success("Posted...");
+          }else{
+            setLoading(false);
+            const { error } = await res.json();
+            toast.error(error);
           }
+          
         } )
 
 
@@ -117,6 +124,7 @@ export default function CreatePoem() {
                     confirm={confirm}
                     text={e}
                     theme={theme}
+                    readonly={false}
                   />
                 );
               })}

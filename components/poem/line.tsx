@@ -5,9 +5,26 @@ type LineType = {
   index: number;
   confirm: boolean;
   theme: "light" | "dark";
+  readonly:boolean
 };
 
-export default function Line({ text, index, confirm, theme }: LineType) {
+
+export function Read({text, color, textAlign}: {text: string, color:string, textAlign: "left" | "right" | "center"}){
+
+
+  return <div>
+
+    <p
+      style={{ color, textAlign }}
+      className="text-lg font-light font-zapf overflow-auto w-full"
+    >
+{text}
+    </p>
+
+  </div>
+}
+
+export default function Line({ text='', index=0, confirm=false, theme="light"}: LineType) {
   // line color
   const [color, setColor] = useState(theme == "light" ? "#000000" : "#ffffff");
 
@@ -23,6 +40,7 @@ export default function Line({ text, index, confirm, theme }: LineType) {
     }
   };
 
+ 
   return (
     <div>
       <p

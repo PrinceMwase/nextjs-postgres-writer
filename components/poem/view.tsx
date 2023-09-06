@@ -1,34 +1,35 @@
-export default function ViewPoem() {
-  return (
-    <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 ">
-      <article className="overflow-hidden rounded-lg shadow-lg">
-        <a href="#">
-          <img
-            alt="Placeholder"
-            className="block h-auto w-full"
-            src="https://picsum.photos/600/400/?random"
-          />
-        </a>
+import { payload } from "./create";
+import { Read } from "./line";
 
+export default function ViewPoem(Payload:any ) {
+  const myPayload: payload =  Payload.payload;
+  
+  return (
+    <div className={`${myPayload.background == "dark" ? "bg-slate-900" : "bg-slate-50"} px-4 py-8 sm:px-16 w-full`}>
+
+    <div className="w-full my-5">
+
+      <article className={`h-full lg:w-fit w-full m-auto overflow-auto  block`}>
         <header className="flex items-center justify-between leading-tight p-2 md:p-4">
           <h1 className="text-lg">
-            <a className="no-underline hover:underline text-white" href="#">
-              Article Title
+            <a className="no-underline hover:underline font-bold  py-4 block" style={{"color": myPayload.background == "light" ? "#000000" : "#ffffff"}} href="#">
+              {myPayload.title}
             </a>
           </h1>
           <p className="text-white text-sm">11/1/19</p>
         </header>
+            
+        {
+          myPayload?.lines?.map( (line, index) =>{
+            return <Read key={index} text={line.line} color={line.color} textAlign={line.align}  />
+          } )
+        }
 
         <footer className="flex items-center justify-between leading-none p-2 md:p-4">
           <a
             className="flex items-center no-underline hover:underline text-white"
             href="#"
           >
-            <img
-              alt="Placeholder"
-              className="block rounded-full"
-              src="https://picsum.photos/32/32/?random"
-            />
             <p className="ml-2 text-sm">Author Name</p>
           </a>
           <a className="no-underline text-white hover:text-red-dark" href="#">
@@ -37,6 +38,8 @@ export default function ViewPoem() {
           </a>
         </footer>
       </article>
+    </div>
+
     </div>
   );
 }

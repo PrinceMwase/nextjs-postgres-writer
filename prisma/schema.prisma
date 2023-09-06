@@ -34,6 +34,7 @@ model Poem {
   id        Int       @id @default(autoincrement()) // The unique identifier for a poem
   title     String // The title of the poem
   content   Json // The content of the poem
+  background String
   createdAt DateTime  @default(now()) // The date and time when the poem was created
   updatedAt DateTime  @updatedAt // The date and time when the poem was last updated
   author    User      @relation(fields: [authorId], references: [id]) // The user who wrote the poem
