@@ -12,11 +12,15 @@ type LineProperty = {
   };
   
 type payload = {
+    id: number
     background: "light" | "dark";
     lines: LineProperty[];
     title: string;
     date: Date;
-    writer: string;
+    writer: {
+      id:number
+      name: string
+    }
   };
 
 
@@ -28,15 +32,20 @@ export async function POST(req: Request){
         skip: values.skip,
         take: values.take, // Adjust the number of posts to load at once
         select:{
+            id: true,
             content: true,
             title: true,
             background: true,
             createdAt: true,
             writer:{
               select: {
+                id:true,
                 username: true
               }
             }
+          },
+          orderBy: {
+            id: "desc"
           }
       });
 
@@ -47,11 +56,15 @@ export async function POST(req: Request){
           let content:LineProperty[] = JSON.parse(plainContent);
 
             retrievedPayload.push({
+                id:  value.id,
                 title: value.title,
                 background: value.background == "dark" || value.background == "light"  ? value.background : "light",
                 lines: content,
                 date: value.createdAt,
-                writer: value.writer.username
+                writer:{
+                  id: value.writer.id,
+                  name: value.writer.username
+                }
             })
         })
         

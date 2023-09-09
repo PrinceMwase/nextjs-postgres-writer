@@ -10,7 +10,10 @@ export default function Infinite()  {
   const [hasMore, setHasMore] = useState(true);
   const [skip, setSkip] = useState(0);
 
+
   const fetchMorePosts = async () => {
+    console.log(poems.length);
+    
     try {
       fetch("api/poem/infinite", {
         method: "POST",
@@ -18,12 +21,17 @@ export default function Infinite()  {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          skip: skip,
-          take: 10, // Adjust the number of posts to load at once
+          skip: poems.length === 0 ? 0 :  skip,
+          take: 2, // Adjust the number of posts to load at once
         }),
       }).then(async (response) => {
+        console.log("success");
+        console.log(response.status);
+        
+        
         if (response.status == 200) {
           const newPoems: payloadType[] = await response.json();
+          
           if (newPoems.length === 0) {
             setHasMore(false);
           } else {
