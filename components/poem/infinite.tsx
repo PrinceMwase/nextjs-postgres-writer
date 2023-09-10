@@ -1,7 +1,7 @@
 // components/InfiniteScroll.js
 
 import React, { useState, useEffect } from "react";
-import { payload as payloadType } from "@/components/poem/create";
+import { payload as payloadType } from "@/components/poem/view";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
 

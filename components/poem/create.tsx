@@ -10,7 +10,7 @@ type LineProperty = {
   color: string;
 };
 
-export type payload = {
+export type createType = {
   background: "light" | "dark";
   lines: LineProperty[];
   title: string;
@@ -40,7 +40,7 @@ export default function CreatePoem() {
           return;
         }
 
-        let thisPayload: payload = {
+        let thisPayload: createType = {
           background: theme,
           lines: [],
           title: "",

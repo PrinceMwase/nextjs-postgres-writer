@@ -1,15 +1,15 @@
 "use client";
-
+import toast from "react-hot-toast";
 import { useState } from "react";
 import { Read } from "./line";
 
-type LineProperty = {
+export type LineProperty = {
   line: string;
   align: "left" | "right" | "center";
   color: string;
 };
 
-type payload = {
+export type payload = {
   id: number;
   background: "light" | "dark";
   lines: LineProperty[];
@@ -19,12 +19,58 @@ type payload = {
     id: number;
     name:  string;
   };
+  _count:{
+    comments: number
+  }
 };
+
+type commentType = {
+  comment: string;
+  poemId: number;
+}
+
 export default function ViewPoem(Payload: any) {
+  const [loading, setLoading] = useState(false);
   const [commentBox, setCommentBox] = useState<boolean>(false)
   const [comment, setComment] = useState<string>('')
+  console.log(Payload.payload);
+  
+  
   const myPayload: payload = Payload.payload;
   const color = myPayload.background == "light" ? "#000000" : "#ffffff";
+
+  async function sendComment(){
+
+    if(checkForComment()){
+      return
+    }
+
+    let commentPayload: commentType= {
+      comment,
+      poemId: myPayload.id
+    }
+    setLoading(true);
+    await fetch("api/comment/create",{
+      method: "POST",
+      headers:{
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(commentPayload)
+    }).then(async(res)=>{
+      setLoading(false);
+          if (res.status === 200) {
+            setComment('')
+            toast.success("commented...");
+          } else {
+            const { error } = await res.json();
+            toast.error(error);
+          }
+    })
+  }
+
+  function checkForComment(){
+    return comment.trim().length < 1 || loading
+  }
   
 
   return (
@@ -52,7 +98,7 @@ export default function ViewPoem(Payload: any) {
             </p>
           </header>
 
-          {myPayload?.lines?.map((line, index) => {
+          {myPayload.lines.map((line, index) => {
             return (
               <Read
                 key={index}
@@ -63,6 +109,7 @@ export default function ViewPoem(Payload: any) {
             );
           })}
 
+          {/* comment input box */}
           <div className={`flex py-2 ${commentBox ? '' : 'hidden'}`}>
             <input
               type="text"
@@ -71,15 +118,18 @@ export default function ViewPoem(Payload: any) {
               value={comment}
               onChange={e => setComment(e.target.value) }
               id="comment"
-              className="my-1 block w-full appearance-none rounded-md border h-full border-gray-300 px-4 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+              className="my-1 block w-full cur appearance-none rounded-md border h-full border-gray-300 px-4 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
             />
-            <svg
+
+            {/* send button */}
+            <a className={`btn ${checkForComment() ? 'opacity-5 cursor-not-allowed' : 'cursor-pointer'}`} onClick={sendComment}>
+                <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-10 align-middle mx-2 cursor-pointer"
+              className="w-10 align-middle mx-2"
             >
               <path
                 strokeLinecap="round"
@@ -88,9 +138,12 @@ export default function ViewPoem(Payload: any) {
                 d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
               />
             </svg>
+            </a>
+          
           </div>
 
-          <footer className="flex items-center justify-between leading-none p-2 md:p-4">
+          {/* Footer */}
+          <footer className="flex items-center justify-between leading-none p-2 space-x-20  md:p-4">
             <a
               className="flex items-center no-underline hover:underline"
               style={{ color }}
@@ -98,13 +151,15 @@ export default function ViewPoem(Payload: any) {
             >
               <p className="ml-2 text-sm">{myPayload.writer.name}</p>
             </a>
-            <a className="no-underlin hover:text-red-dark"  href="#"
+            <a className="no-underline" style={{color}}  href="#"
               onClick={(e)=>{
                 e.preventDefault();
-                setCommentBox(true)
+                setCommentBox((cur: boolean) => !cur)
               }}
             >
-              <span className="hidden">Comment</span>
+
+              {/* Comments Count */}
+                {myPayload._count.comments}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

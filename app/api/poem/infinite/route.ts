@@ -1,3 +1,4 @@
+import { LineProperty, payload } from "@/components/poem/view";
 import prisma from "../../../../lib/prisma";
 
 import { NextResponse } from "next/server";
@@ -5,23 +6,7 @@ type parameters = {
     skip: number;
     take: number;
 }
-type LineProperty = {
-    line: string;
-    align: "left" | "right" | "center";
-    color: string;
-  };
-  
-type payload = {
-    id: number
-    background: "light" | "dark";
-    lines: LineProperty[];
-    title: string;
-    date: Date;
-    writer: {
-      id:number
-      name: string
-    }
-  };
+
 
 
 export async function POST(req: Request){
@@ -42,12 +27,19 @@ export async function POST(req: Request){
                 id:true,
                 username: true
               }
+            },
+            _count:{
+              select:{
+                comments: true
+              }
             }
+            
           },
           orderBy: {
             id: "desc"
           }
       });
+      
 
       if(poems){
         poems.forEach((value)=>{
@@ -64,13 +56,13 @@ export async function POST(req: Request){
                 writer:{
                   id: value.writer.id,
                   name: value.writer.username
-                }
+                },
+                _count: value._count
             })
         })
         
         return NextResponse.json(retrievedPayload, {status:200})
     }else{
-      console.log(poems)
       return NextResponse.json({ error: "Failed to retrieve" }, { status: 400 });
     }
 }

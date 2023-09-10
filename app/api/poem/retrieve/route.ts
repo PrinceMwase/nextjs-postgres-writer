@@ -1,18 +1,7 @@
+import { LineProperty, payload } from "@/components/poem/view";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-type LineProperty = {
-    line: string;
-    align: "left" | "right" | "center";
-    color: string;
-  };
-  
-type payload = {
-    background: "light" | "dark";
-    lines: LineProperty[];
-    title: string;
-    date: Date;
-    writer: string;
-  };
+
 
 export async function GET(re: Request){
 
@@ -20,13 +9,20 @@ export async function GET(re: Request){
 
     const results = await prisma.poem.findMany({
       select:{
+        id: true,
         content: true,
         title: true,
         background: true,
         createdAt: true,
         writer:{
           select: {
+            id:  true,
             username: true
+          }
+        },
+        _count:{
+          select:{
+            comments:true
           }
         }
       }
@@ -39,11 +35,16 @@ export async function GET(re: Request){
           let content:LineProperty[] = JSON.parse(plainContent);
 
             retrievedPayload.push({
+                id: value.id,
                 title: value.title,
                 background: value.background == "dark" || value.background == "light"  ? value.background : "light",
                 lines: content,
                 date: value.createdAt,
-                writer: value.writer.username
+                writer: {
+                  id: value.writer.id,
+                  name:value.writer.username,
+                },
+                _count:value._count
             })
         })
         
