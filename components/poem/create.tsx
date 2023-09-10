@@ -27,7 +27,7 @@ export default function CreatePoem() {
 
   return (
     <form
-      className="bg-gray-50 px-4 py-8 sm:px-16 flex-auto w-full"
+      className="bg-gray-50 px-4 my-12 py-4 sm:px-16 flex-auto w-full"
       onSubmit={(e: FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -35,7 +35,7 @@ export default function CreatePoem() {
         const lines = content?.split("\n");
 
         console.log(lines);
-        
+
         if (lines === undefined) {
           return;
         }
@@ -52,8 +52,6 @@ export default function CreatePoem() {
           console.log(inputs[index]);
           let alignment = inputs[index].getAttribute("id")?.split("line")[1];
 
-          
-          
           if (alignment === undefined) {
             continue;
           }
@@ -90,14 +88,14 @@ export default function CreatePoem() {
         });
       }}
     >
-      <div>
+      <div className="py-4">
         <label
           htmlFor="content"
-          className="block text-xs text-gray-600 uppercase"
+          className="block text-xs text-gray-600 uppercase fixed"
         >
           Compose
         </label>
-        <div className="h-96 w-full my-5 ">
+        <div className="h-96 w-full my-5 px-8">
           {!preview && (
             <textarea
               id="content"
@@ -113,7 +111,7 @@ export default function CreatePoem() {
           )}
           {preview && (
             <div
-              className={`h-full lg:w-fit w-max m-auto  overflow-auto p-8 ${
+              className={`h-full lg:w-fit m-auto  overflow-auto p-8 ${
                 theme == "dark" ? "bg-slate-900" : "bg-slate-50"
               }`}
             >
@@ -138,19 +136,32 @@ export default function CreatePoem() {
             </div>
           )}
         </div>
-        <label htmlFor="mode" className="block text-xs text-gray-600 uppercase">
-          Dark Background
-        </label>
-        <input
-          type="checkbox"
-          onChange={(e) => {
-            if (e.target.checked) {setTheme("dark")}else{
-              setTheme("light")
-            }
-          }}
-          name="mode"
-          id="mode"
-        />
+
+        
+
+        <div className="px-8">
+          <label
+            htmlFor="mode"
+            className="block text-xs text-gray-600 uppercase"
+          >
+            Dark Background
+          </label>
+          <input
+            type="checkbox"
+            onChange={(e) => {
+              if (e.target.checked) {
+                setTheme("dark");
+              } else {
+                setTheme("light");
+              }
+            }}
+            name="mode"
+            id="mode"
+          />
+        </div>
+
+       
+       <div className="px-8 ">
 
         {!preview && (
           <input
@@ -165,6 +176,12 @@ export default function CreatePoem() {
             className="my-1 block w-full appearance-none rounded-md border h-full border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
           />
         )}
+       </div>
+
+
+
+        <div className="px-8 space-x-2">
+
         {!confirm && (
           <button
             className="h-10 px-6 font-semibold rounded-md bg-black text-white"
@@ -179,7 +196,6 @@ export default function CreatePoem() {
           <button
             disabled={loading}
             onClick={(e) => {
-              
               if (!confirm) {
                 e.preventDefault();
                 setConfirmation(() => true);
@@ -200,6 +216,8 @@ export default function CreatePoem() {
             )}{" "}
           </button>
         )}
+        </div>
+
       </div>
     </form>
   );
