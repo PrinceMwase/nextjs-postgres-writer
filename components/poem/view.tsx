@@ -29,8 +29,8 @@ type commentType = {
   poemId: number;
 };
 
-export default function ViewPoem(Payload: any) {
-  const myPayload: payload = Payload.payload;
+export default function ViewPoem({payload}: {payload: payload}) {
+  const myPayload: payload = payload;
   const color = myPayload.background == "light" ? "#000000" : "#ffffff";
   const [loading, setLoading] = useState(false);
   const [commentBox, setCommentBox] = useState<boolean>(false);
