@@ -9,6 +9,9 @@ export default async function middleware(req: NextRequest) {
   if (path === "/") {
     return NextResponse.next();
   }
+  if (path === "/home") {
+    return NextResponse.redirect(new URL("/", req.url))
+  }
 
   const session = await getToken({
     req,

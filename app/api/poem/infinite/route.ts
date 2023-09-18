@@ -57,7 +57,8 @@ export async function POST(req: Request){
                   id: value.writer.id,
                   name: value.writer.username
                 },
-                _count: value._count
+                _count: value._count,
+                comments: undefined
             })
         })
         

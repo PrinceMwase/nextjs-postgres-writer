@@ -2,6 +2,7 @@
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { Read } from "./line";
+import Link from "next/link";
 
 export type LineProperty = {
   line: string;
@@ -22,11 +23,14 @@ export type payload = {
   _count: {
     comments: number;
   };
+  comments : commentType[] | undefined
 };
 
-type commentType = {
+export type commentType = {
   comment: string;
-  poemId: number;
+  poemId: number | undefined;
+  writer: any | undefined
+
 };
 
 export default function ViewPoem({payload}: {payload: payload}) {
@@ -47,6 +51,7 @@ export default function ViewPoem({payload}: {payload: payload}) {
     let commentPayload: commentType = {
       comment,
       poemId: myPayload.id,
+      writer: undefined
     };
     setLoading(true);
     await fetch("api/comment/create", {
@@ -84,13 +89,13 @@ export default function ViewPoem({payload}: {payload: payload}) {
         >
           <header className="flex items-center justify-between leading-tight p-2 md:p-4">
             <h1 className="text-lg">
-              <a
+              <Link
                 className="no-underline hover:underline font-bold  py-4 block"
                 style={{ color }}
-                href="#"
+                href={`/poem/${myPayload.id}`}
               >
                 {myPayload.title}
-              </a>
+              </Link>
             </h1>
             <p className="text-white text-sm" style={{ color }}>
               {myPayload.date.toString().split("T")[0]}
