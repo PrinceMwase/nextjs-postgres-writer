@@ -7,8 +7,8 @@ export default function Home() {
   return (
     <div className="h-max">
       <Hero/>
-      {/* <Create />
-      <Infinite /> */}
+      <Create />
+      <Infinite />
     </div>
   );
 }
