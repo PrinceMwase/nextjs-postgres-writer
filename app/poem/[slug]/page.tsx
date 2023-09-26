@@ -33,12 +33,17 @@ export default function Page({ params }: { params: { slug: string } }) {
     <div className="h-screen">
       <ViewPoem payload={poem} />
       <div className="px-4 py-8 sm:px-16 w-full">
-        {poem.comments?.map((comment) => {
+        {poem.comments?.map((comment, index) => {
           return (
-            <div className="block">
+            <div className="block" key={index}>
               <div className="flex items-center justify-between leading-none p-2 space-x-20  md:p-4">
-                <span>{comment.comment}</span>
+                <span>{comment.comment}</span><span className="text-right text-sm text-gray-500">@{comment.writer.username}</span>
               </div>
+              <div className="p-2 md:p-4">
+                <span className="text-xs">{comment.createdAt?.toString()}</span>
+              </div>
+
+              <hr />
             </div>
           );
         })}

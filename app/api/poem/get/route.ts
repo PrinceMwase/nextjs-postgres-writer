@@ -37,6 +37,7 @@ export async function GET(req: Request) {
           id: true,
           content: true,
           writer: true,
+          createdAt: true,
         },
       },
     },
@@ -54,6 +55,7 @@ export async function GET(req: Request) {
         poemId: undefined,
         comment: value.content,
         writer: value.writer,
+        createdAt: value.createdAt
       });
     });
 

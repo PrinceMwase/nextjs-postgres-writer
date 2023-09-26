@@ -8,5 +8,6 @@
             "name": "vs",
             "connectString": "postgresql://postgres:root@localhost:5432/writers"
         }
-    ]
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

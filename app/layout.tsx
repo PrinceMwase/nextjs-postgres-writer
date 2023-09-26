@@ -1,4 +1,4 @@
-'use client'
+
 // These styles apply to every route in the application
 import "@/styles/globals.css";
 import { Metadata } from "next";
@@ -29,24 +29,16 @@ export const metadata: Metadata = {
   themeColor: "#FFF",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-  }) {
-
-  const [currentPoem, setCurrentPoem] = useState<payload | null>(null);
-  const [allPoems, setAllPoems] = useState<payload[] | null>(null);
-  const [hasMore, setHasMore] = useState<boolean >(true);
-
+}) {
   return (
     <html lang="en">
       <body className={inter.variable}>
         <Toaster />
-        <PoemContext.Provider value={{currentPoem, allPoems, hasMore,setCurrentPoem, setAllPoems, setHasMore}} >
-
         {children}
-        </PoemContext.Provider>
       </body>
     </html>
   );

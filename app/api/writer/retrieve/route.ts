@@ -6,14 +6,13 @@ import { NextResponse } from 'next/server';
 export async function GET(req: Request){
     let {stringified} = SlugID(req.url)
 
-
-    const  writer = await prisma.writer.findUniqueOrThrow({
+    const writer = await prisma.writer.findUniqueOrThrow({
         where:{
             username: stringified
         },
         select:{
+            id: true,
             username: true,
-            Poem: true
         }
     })
 

@@ -30,6 +30,7 @@ export type commentType = {
   comment: string;
   poemId: number | undefined;
   writer: any | undefined
+  createdAt?: Date
 
 };
 
@@ -54,7 +55,7 @@ export default function ViewPoem({payload}: {payload: payload}) {
       writer: undefined
     };
     setLoading(true);
-    await fetch("api/comment/create", {
+    await fetch("/api/comment/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +89,7 @@ export default function ViewPoem({payload}: {payload: payload}) {
           className={`h-full lg:w-fit w-full m-auto overflow-auto  block`}
         >
           <header className="flex items-center justify-between leading-tight p-2 md:p-4">
-            <h1 className="text-lg">
+            <h1 className="text-lg text-left">
               <Link
                 className="no-underline hover:underline font-bold  py-4 block"
                 style={{ color }}
@@ -154,13 +155,13 @@ export default function ViewPoem({payload}: {payload: payload}) {
 
           {/* Footer */}
           <footer className="flex items-center justify-between leading-none p-2 space-x-20  md:p-4">
-            <a
+            <Link
               className="flex items-center no-underline hover:underline"
               style={{ color }}
-              href="#"
+              href={`/writer/${myPayload.writer.name}`}
             >
               <p className="text-sm">{myPayload.writer.name}</p>
-            </a>
+            </Link>
             <a
               className="no-underline"
               style={{ color }}

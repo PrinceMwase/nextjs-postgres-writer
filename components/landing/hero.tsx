@@ -1,4 +1,3 @@
-import Link from "next/link";
 import NavBar from "../navigation/navbar";
 
 export default function Hero() {
