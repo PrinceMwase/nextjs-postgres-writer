@@ -27,7 +27,7 @@ export default function CreatePoem() {
 
   return (
     <form
-      className="bg-gray-50 px-4 my-12 py-4 sm:px-16 flex-auto w-full"
+      className="bg-gray-50 px-4 py-4 sm:px-16 flex-auto w-full"
       onSubmit={(e: FormEvent) => {
         e.preventDefault();
         setLoading(true);

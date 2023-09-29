@@ -7,6 +7,7 @@ import { payload, payload as payloadType } from "@/components/poem/view";
 import React, {  useContext, useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Create from "./create";
 
 export default function Infinite({writerId}:{writerId?:number}) {
   const [allPoems, setAllPoems] = useState<payload[] | null>(null);
@@ -67,9 +68,12 @@ export default function Infinite({writerId}:{writerId?:number}) {
           </p>
         }
       >
+        <div className="h-max">
+        <Create />
         {allPoems?.map((value: payloadType, index) => {
           return <ViewPoem key={index} payload={value} />;
         })}
+        </div>
       </InfiniteScroll>
     </>
   );

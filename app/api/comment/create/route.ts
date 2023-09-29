@@ -25,7 +25,7 @@ export async function POST(req: Request){
       });
       if (user?.writer.length !== undefined && user?.writer.length > 0) {
 
-        const results= await prisma.comment.create({
+        const results = await prisma.comment.create({
           data: {
               content: comment.comment,
               writerId: user?.writer[0].id ?  user?.writer[0].id : 1,
