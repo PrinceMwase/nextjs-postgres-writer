@@ -1,41 +1,43 @@
-'use client'
+"use client";
 // components/InfiniteScroll.js
 import { payload, payload as payloadType } from "../../types/poem";
 
-import React, {  useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Create from "./create";
-import { poemLikeType } from "types/like";
+import { usePathname, useSearchParams } from "next/navigation";
 
-export async function retrieveLikes(){
-  return fetch("/api/poem/likes",{
+export async function retrieveLikes() {
+  return fetch("/api/poem/likes", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   }).then(async (response) => {
-    if(response.status == 200){
-      const allMyLikes: {myResult: number[]} = await response.json()
+    if (response.status == 200) {
+      const allMyLikes: { myResult: number[] } = await response.json();
       console.log(allMyLikes);
-              
-      return allMyLikes.myResult
-      
+
+      return allMyLikes.myResult;
     }
-  })
+  });
 }
 
-export default function Infinite({writerId}:{writerId?:number}) {
-  const [allPoems, setAllPoems] = useState<payload[] | null>(null);
-  const [hasMore, setHasMore] = useState<boolean >(true);
+export default function Infinite({ writerId }: { writerId?: number }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [allPoems, setAllPoems] = useState<payload[]>([]);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [likes, setLikes] = useState<number[] | null>(null);
 
-   const [skip, setSkip] = useState(0);
+  const [skip, setSkip] = useState(0);
 
-  const fetchLikes = async ()=>{
-    const result = await retrieveLikes()
-    setLikes( result ? result : null )
-  }
+  const fetchLikes = async () => {
+    const result = await retrieveLikes();
+    setLikes(result ? result : null);
+    await fetchMorePosts();
+  };
   const fetchMorePosts = async () => {
     try {
       fetch("/api/poem/infinite", {
@@ -49,7 +51,6 @@ export default function Infinite({writerId}:{writerId?:number}) {
           take: 2, // Adjust the number of posts to load at once
         }),
       }).then(async (response) => {
-       
         if (response.status == 200) {
           const newPoems: payloadType[] = await response.json();
           console.log(newPoems);
@@ -72,16 +73,14 @@ export default function Infinite({writerId}:{writerId?:number}) {
     }
   };
 
-
-
   useEffect(() => {
     fetchLikes();
-  }, [])
+  }, [pathname, searchParams]);
 
   return (
     <>
       <InfiniteScroll
-        dataLength={allPoems?.length || 0} //This is important field to render the next data
+        dataLength={allPoems.length} //This is important field to render the next data
         next={fetchMorePosts}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
@@ -90,12 +89,36 @@ export default function Infinite({writerId}:{writerId?:number}) {
             <b>Yay! You have seen it all</b>
           </p>
         }
+        // below props only if you need pull down functionality
+        refreshFunction={() => {
+          setAllPoems([]);
+          setHasMore(true);
+          setSkip(() => {
+            return 0;
+          });
+          fetchMorePosts();
+        }}
+        pullDownToRefresh={true}
+        pullDownToRefreshThreshold={50}
+        pullDownToRefreshContent={
+          <h3 style={{ textAlign: "center" }}>&#8595; Pull down to refresh</h3>
+        }
+        releaseToRefreshContent={
+          <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
+        }
       >
         <div className="h-max">
-        <Create />
-        {likes && allPoems?.map((value: payloadType, index) => {
-          return <ViewPoem key={index} payload={value} liked={likes?.includes(value.id) ? true : false} />;
-        })}
+          <Create />
+          {likes &&
+            allPoems?.map((value: payloadType, index) => {
+              return (
+                <ViewPoem
+                  key={index}
+                  payload={value}
+                  liked={likes?.includes(value.id) ? true : false}
+                />
+              );
+            })}
         </div>
       </InfiniteScroll>
     </>

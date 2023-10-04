@@ -6,13 +6,19 @@ import Link from "next/link";
 import { payload, commentType } from "../../types/poem";
 import { useRouter } from "next/navigation";
 import Like from "./like";
+import Delete from "./delete";
 
-export default function ViewPoem({ payload, liked }: { payload: payload, liked?: boolean }) {
+export default function ViewPoem({
+  payload,
+  liked,
+}: {
+  payload: payload;
+  liked?: boolean;
+}) {
   const myPayload: payload = payload;
   if ("error" in myPayload) {
     return <></>;
   }
-  const router = useRouter();
   const color = myPayload.background == "light" ? "#000000" : "#ffffff";
   const [loading, setLoading] = useState(false);
   const [commentBox, setCommentBox] = useState<boolean>(false);
@@ -55,27 +61,6 @@ export default function ViewPoem({ payload, liked }: { payload: payload, liked?:
     return comment.trim().length < 1 || loading;
   }
 
-  async function deletePoem() {
-    fetch("/api/poem/delete", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        poemId: myPayload.id,
-      }),
-    }).then(async (res) => {
-      if (res.status === 200) {
-        toast.success("Deleted successfully");
-        router.refresh();
-
-        router.push("/");
-      } else {
-        toast.error("failed to delete");
-      }
-    });
-  }
-
   return (
     <div
       className={`${
@@ -100,6 +85,18 @@ export default function ViewPoem({ payload, liked }: { payload: payload, liked?:
               {myPayload.date?.toString().split("T")[0].replaceAll("-", "/")}
             </p>
           </header>
+
+          <div className="px-20">
+            <Link
+              className="flex space-x-2 text-md no-underline"
+              style={{ color }}
+              href={`/writer/${myPayload.writer.name}`}
+            >
+              <span>BY</span>{" "}
+              <p className="uppercase underline">{myPayload.writer.name}</p>
+            </Link>
+          </div>
+
           <div className="px-20">
             {myPayload.lines.map((line, index) => {
               return (
@@ -122,7 +119,7 @@ export default function ViewPoem({ payload, liked }: { payload: payload, liked?:
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               id="comment"
-              className="my-1 block w-full cur appearance-none rounded-md border h-full border-gray-300 px-4 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+              className="my-1 block w-full appearance-none rounded-none border-b-2 h-full border-gray-300 px-4 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
             />
 
             {/* send button */}
@@ -154,30 +151,17 @@ export default function ViewPoem({ payload, liked }: { payload: payload, liked?:
 
           {/* Footer */}
           <footer className="flex items-center justify-between leading-none p-2 space-x-20  md:p-4">
-            <Link
-              className="flex items-center no-underline hover:underline"
-              style={{ color }}
-              href={`/writer/${myPayload.writer.name}`}
-            >
-              <p className="text-sm">{myPayload.writer.name}</p>
-            </Link>
-
-            <span
-              style={{ color }}
-              className="cursor-pointer"
-              onClick={deletePoem}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-</svg>
-
-            </span>
+            <Delete id={payload.id} color={color} />
 
             {/* like and comment */}
-            <div className="flex">
+            <div className="flex space-x-4">
               {/* like */}
-              <Like id={payload.id} liked={liked ? liked : false} color={color}/>
-              
+              <Like
+                id={payload.id}
+                liked={liked ? liked : false}
+                color={color}
+              />
+
               {/* comment */}
               <a
                 className="no-underline"
@@ -189,9 +173,7 @@ export default function ViewPoem({ payload, liked }: { payload: payload, liked?:
                 }}
               >
                 {/* Comments Count */}
-                <span className="absolute -my-2 ">
-                {commentCount}
-                </span>
+                <span className="absolute -my-2 ">{commentCount}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
