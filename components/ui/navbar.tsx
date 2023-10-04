@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Navbar = () => {
 
@@ -9,6 +9,7 @@ const Navbar = () => {
     useEffect(() => {
       const handleScroll = () => {
         if (window.scrollY > 100) {
+          
           setIsNavbarFixed(true);
         } else {
           setIsNavbarFixed(false);
@@ -22,7 +23,7 @@ const Navbar = () => {
       };
     }, []);
   return (
-    <nav className={`bg-gray-800 p-4 ${isNavbarFixed ? 'fixed top-0 w-full' : ''}`}>
+    <nav className={`bg-gray-800 p-4 ${isNavbarFixed ? 'fixed top-0 w-full' : ''}`}  >
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-white text-xl font-semibold">Poet's Haven</div>
         <div className="hidden md:flex space-x-4">

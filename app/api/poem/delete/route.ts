@@ -3,44 +3,33 @@ import prisma from "../../../../lib/prisma";
 import { NextResponse } from "next/server";
 
 export type deletePoemType = {
-    poemId: number
-}
+  poemId: number;
+};
 
-export async function POST(req: Request){
-    const payload: deletePoemType = await req.json();
-    const session = await getServerSession();
+export async function POST(req: Request) {
+  const payload: deletePoemType = await req.json();
+  const session = await getServerSession();
 
-    const writer = await prisma.writer.findFirstOrThrow({
-       where:{
-        userId: session?.user?.id
-       },
-       select:{
-        Poem:{
-            select:{
-                id:true
-            },
-            where:{
-                id:payload.poemId
-            }
-        }
-       }
-    })
-    
+  const poem = await prisma.poem.findFirstOrThrow({
+    select: {
+      id: true,
+    },
+    where: {
+      writerId: session?.user?.writer?.id,
+      id: payload.poemId,
+    },
+  });
+  
+  const results = await prisma.poem.delete({
+    where: {
+      id: poem.id,
+    }
+  });
+  
 
-   const results =  await prisma.poem.delete({
-        where:{
-            id: writer.Poem[0].id,
-        }
-    })
-
-    if (results) {
-        return NextResponse.json(results, { status: 200 });
-      } else {
-        return NextResponse.json(
-          { success: "Failed to Delete" },
-          { status: 400 }
-        );
-      }
-    
-
+  if (results) {
+    return NextResponse.json(results, { status: 200 });
+  } else {
+    return NextResponse.json({ success: "Failed to Delete" }, { status: 400 });
+  }
 }

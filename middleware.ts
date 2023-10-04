@@ -25,5 +25,6 @@ export default async function middleware(req: NextRequest) {
   } else if (session && (path === "/login" || path === "/register")) {
     return NextResponse.redirect(new URL("/protected", req.url));
   }
+  
   return NextResponse.next();
 }

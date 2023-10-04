@@ -6,13 +6,36 @@ import React, {  useContext, useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Create from "./create";
+import { poemLikeType } from "types/like";
+
+export async function retrieveLikes(){
+  return fetch("/api/poem/likes",{
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then(async (response) => {
+    if(response.status == 200){
+      const allMyLikes: {myResult: number[]} = await response.json()
+      console.log(allMyLikes);
+              
+      return allMyLikes.myResult
+      
+    }
+  })
+}
 
 export default function Infinite({writerId}:{writerId?:number}) {
   const [allPoems, setAllPoems] = useState<payload[] | null>(null);
   const [hasMore, setHasMore] = useState<boolean >(true);
+  const [likes, setLikes] = useState<number[] | null>(null);
 
    const [skip, setSkip] = useState(0);
 
+  const fetchLikes = async ()=>{
+    const result = await retrieveLikes()
+    setLikes( result ? result : null )
+  }
   const fetchMorePosts = async () => {
     try {
       fetch("/api/poem/infinite", {
@@ -49,8 +72,10 @@ export default function Infinite({writerId}:{writerId?:number}) {
     }
   };
 
+
+
   useEffect(() => {
-    fetchMorePosts();
+    fetchLikes();
   }, [])
 
   return (
@@ -68,8 +93,8 @@ export default function Infinite({writerId}:{writerId?:number}) {
       >
         <div className="h-max">
         <Create />
-        {allPoems?.map((value: payloadType, index) => {
-          return <ViewPoem key={index} payload={value} />;
+        {likes && allPoems?.map((value: payloadType, index) => {
+          return <ViewPoem key={index} payload={value} liked={likes?.includes(value.id) ? true : false} />;
         })}
         </div>
       </InfiniteScroll>

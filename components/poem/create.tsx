@@ -5,9 +5,11 @@ import toast from "react-hot-toast";
 import LoadingDots from "../loading-dots";
 
 import {createType} from '../../types/poem'
+import { useRouter } from "next/navigation";
 
 
 export default function CreatePoem() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [content, setContent] = useState<string>("");
@@ -69,6 +71,9 @@ export default function CreatePoem() {
           setLoading(false);
           if (res.status === 200) {
             toast.success("Posted...");
+            router.refresh();
+        
+            router.push("/");
           } else {
             const { error } = await res.json();
             toast.error(error);

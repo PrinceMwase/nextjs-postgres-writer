@@ -7,6 +7,8 @@ export async function POST(req: Request) {
   const payload: createType = await req.json();
   const session = await getServerSession();
 
+ 
+
   const user = await prisma.user.findUnique({
     select: {
       writer: {
@@ -39,6 +41,8 @@ export async function POST(req: Request) {
       );
     }
   } else {
-    return NextResponse.json({ success: "Failed to Create" }, { status: 400 });
+    console.log(user);
+    
+    return NextResponse.json({ success: "Failed to Create you are not a writer" }, { status: 400 });
   }
 }

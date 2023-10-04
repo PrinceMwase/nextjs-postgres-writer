@@ -4,11 +4,22 @@ import ViewPoem from "@/components/poem/view";
 import {payload} from "../../../types/poem"
 import moment from 'moment';
 import { useEffect, useState } from "react";
+import { retrieveLikes } from "@/components/poem/infinite";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [poem, setPoem] = useState<payload>();
+  const [likes, setLikes] = useState<number[] | null>(null);
+
+
+  const fetchLikes = async ()=>{
+    const result = await retrieveLikes()
+    setLikes( result ? result : null )
+  }
 
   useEffect(() => {
+
+    fetchLikes();
+
     if (typeof window !== "undefined") {
       const url = new URL("api/poem/get", window.location.origin);
 
@@ -35,7 +46,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   return (
     <div className="h-screen">
-      <ViewPoem payload={poem} />
+      {likes && <ViewPoem payload={poem} liked={likes?.includes(poem.id) ? true : false} />}
       <div className="px-4 py-8 sm:px-16 w-full">
         {poem.comments?.map((comment, index) => {
           return (

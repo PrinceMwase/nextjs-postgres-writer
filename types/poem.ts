@@ -31,6 +31,7 @@ export type payload = {
     comments: number;
   };
   comments?: commentType[] | undefined;
+  liked?: boolean
 };
 
 export type commentType = {
