@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
-import { LineProperty, payload, commentType } from "@/components/poem/view";
+import { LineProperty, payload, commentType } from "../../../../types/poem";
 
 export async function GET(req: Request) {
 

@@ -4,9 +4,7 @@ import "@/styles/globals.css";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import { Suspense, useContext, useState } from "react";
-import { payload, payload as payloadType } from "@/components/poem/view";
-import PoemContext from "@/lib/poems_context";
+import Navbar from "@/components/ui/navbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,6 +36,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.variable}>
         <Toaster />
+        <Navbar />
         {children}
       </body>
     </html>

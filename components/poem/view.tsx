@@ -3,36 +3,8 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { Read } from "./line";
 import Link from "next/link";
+import {payload,commentType} from "../../types/poem"
 
-export type LineProperty = {
-  line: string;
-  align: "left" | "right" | "center";
-  color: string;
-};
-
-export type payload = {
-  id: number;
-  background: "light" | "dark";
-  lines: LineProperty[];
-  title: string;
-  date: Date;
-  writer: {
-    id: number;
-    name: string;
-  };
-  _count: {
-    comments: number;
-  };
-  comments : commentType[] | undefined
-};
-
-export type commentType = {
-  comment: string;
-  poemId: number | undefined;
-  writer: any | undefined
-  createdAt?: Date
-
-};
 
 export default function ViewPoem({payload}: {payload: payload}) {
   const myPayload: payload = payload;
@@ -86,12 +58,12 @@ export default function ViewPoem({payload}: {payload: payload}) {
     >
       <div className="w-full my-5">
         <article
-          className={`h-full lg:w-fit w-full m-auto overflow-auto  block`}
+          className={`h-full lg:w-fit w-full m-auto overflow-auto shadow-md block`}
         >
           <header className="flex items-center justify-between leading-tight p-2 md:p-4">
             <h1 className="text-lg text-left">
               <Link
-                className="no-underline hover:underline font-bold  py-4 block"
+                className="no-underline hover:underline font-bold tracking-wider py-4 block"
                 style={{ color }}
                 href={`/poem/${myPayload.id}`}
               >
@@ -99,13 +71,15 @@ export default function ViewPoem({payload}: {payload: payload}) {
               </Link>
             </h1>
             <p className="text-white text-sm" style={{ color }}>
-              {myPayload.date.toString().split("T")[0]}
+              {myPayload.date.toString().split("T")[0].replaceAll('-','/')}
             </p>
           </header>
+<div className="px-20">
 
           {myPayload.lines.map((line, index) => {
             return (
               <Read
+              
                 key={index}
                 text={line.line}
                 color={line.color}
@@ -113,6 +87,7 @@ export default function ViewPoem({payload}: {payload: payload}) {
               />
             );
           })}
+</div>
 
           {/* comment input box */}
           <div className={`flex py-2 ${commentBox ? "" : "hidden"}`}>

@@ -1,12 +1,7 @@
 import { DragEvent, useState } from "react";
+import { LineType } from "types/poem";
 
-type LineType = {
-  text: string;
-  index: number;
-  confirm: boolean;
-  theme: "light" | "dark";
-  readonly: boolean;
-};
+
 
 export function Read({
   text,
@@ -51,7 +46,7 @@ export default function Line({
   };
 
   return (
-    <div>
+    <>
       <p
         style={{ color, textAlign: align }}
         className="text-lg font-light font-zapf"
@@ -118,6 +113,6 @@ export default function Line({
           </label>
         )}
       </p>
-    </div>
+    </>
   );
 }

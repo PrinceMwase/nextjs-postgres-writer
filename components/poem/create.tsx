@@ -4,17 +4,8 @@ import Line from "@/components/poem/line";
 import toast from "react-hot-toast";
 import LoadingDots from "../loading-dots";
 
-type LineProperty = {
-  line: string;
-  align: "left" | "right" | "center";
-  color: string;
-};
+import {createType} from '../../types/poem'
 
-export type createType = {
-  background: "light" | "dark";
-  lines: LineProperty[];
-  title: string;
-};
 
 export default function CreatePoem() {
   const [loading, setLoading] = useState(false);
@@ -23,7 +14,6 @@ export default function CreatePoem() {
   const [title, setTitle] = useState<string>("");
   const [preview, setPreview] = useState<boolean>(false);
   const [confirm, setConfirmation] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
 
   return (
     <form
@@ -89,7 +79,7 @@ export default function CreatePoem() {
       <div className="py-4">
         <label
           htmlFor="content"
-          className="block text-xs text-gray-600 uppercase fixed bg-white"
+          className="block text-xs text-gray-600 opacity-80 hover:opacity-100 cursor-pointer uppercase fixed bg-white"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,8 +1,6 @@
 'use client'
 // components/InfiniteScroll.js
-
-import PoemContext from "@/lib/poems_context";
-import { payload, payload as payloadType } from "@/components/poem/view";
+import { payload, payload as payloadType } from "../../types/poem";
 
 import React, {  useContext, useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";

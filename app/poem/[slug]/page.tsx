@@ -1,6 +1,8 @@
 "use client";
 
-import ViewPoem, { payload } from "@/components/poem/view";
+import ViewPoem from "@/components/poem/view";
+import {payload} from "../../../types/poem"
+import moment from 'moment';
 import { useEffect, useState } from "react";
 
 export default function Page({ params }: { params: { slug: string } }) {
@@ -17,6 +19,8 @@ export default function Page({ params }: { params: { slug: string } }) {
           return response.json();
         })
         .then((data) => {
+          console.log(data);
+          
           return setPoem(data);
         })
         .catch((error) => {
@@ -40,7 +44,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 <span>{comment.comment}</span><span className="text-right text-sm text-gray-500">@{comment.writer.username}</span>
               </div>
               <div className="p-2 md:p-4">
-                <span className="text-xs">{comment.createdAt?.toString()}</span>
+                <span className="text-xs">{moment(comment.createdAt).fromNow()}</span>
               </div>
 
               <hr />

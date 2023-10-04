@@ -1,4 +1,4 @@
-import { createType } from "@/components/poem/create";
+import { createType } from "../../../../types/poem";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";

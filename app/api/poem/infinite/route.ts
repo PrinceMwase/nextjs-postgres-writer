@@ -1,4 +1,4 @@
-import { LineProperty, payload } from "@/components/poem/view";
+import { LineProperty, payload } from "../../../../types/poem";
 import prisma from "../../../../lib/prisma";
 
 import { NextResponse } from "next/server";
