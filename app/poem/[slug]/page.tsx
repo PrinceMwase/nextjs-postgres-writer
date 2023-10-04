@@ -5,11 +5,7 @@ import {payload} from "../../../types/poem"
 import moment from 'moment';
 import { useEffect, useState } from "react";
 import { retrieveLikes } from "@/components/poem/infinite";
-import { usePathname, useSearchParams } from "next/navigation";
-
 export default function Page({ params }: { params: { slug: string } }) {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
   const [poem, setPoem] = useState<payload>();
   const [likes, setLikes] = useState<number[] | null>(null);
 
@@ -41,7 +37,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           console.error(error);
         });
     }
-  },  [pathname, searchParams]);
+  },  []);
 
   if (poem === undefined) {
     return;

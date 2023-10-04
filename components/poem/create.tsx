@@ -4,9 +4,8 @@ import Line from "@/components/poem/line";
 import toast from "react-hot-toast";
 import LoadingDots from "../loading-dots";
 
-import {createType} from '../../types/poem'
-import { useRouter } from "next/navigation";
-
+import { createType } from "../../types/poem";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function CreatePoem() {
   const router = useRouter();
@@ -16,70 +15,75 @@ export default function CreatePoem() {
   const [title, setTitle] = useState<string>("");
   const [preview, setPreview] = useState<boolean>(false);
   const [confirm, setConfirmation] = useState<boolean>(false);
+  
+  function createRequest(e: FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+
+    const lines = content?.split("\n");
+
+    console.log(lines);
+
+    if (lines === undefined) {
+      return;
+    }
+
+    let thisPayload: createType = {
+      background: theme,
+      lines: [],
+      title: "",
+    };
+    let target = e.target as HTMLElement;
+    let inputs = target.getElementsByTagName("input");
+
+    for (let index = 0; index < inputs.length; index++) {
+      console.log(inputs[index]);
+      let alignment = inputs[index].getAttribute("id")?.split("line")[1];
+
+      if (alignment === undefined) {
+        continue;
+      }
+
+      if (
+        alignment === "center" ||
+        alignment === "left" ||
+        alignment === "right"
+      )
+        thisPayload.lines.push({
+          line: lines[index],
+          align: alignment,
+          color: inputs[index].value,
+        });
+    }
+    thisPayload.title = title;
+
+    fetch("/api/poem/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(thisPayload),
+    }).then(async (res) => {
+      setLoading(false);
+      if (res.status === 200) {
+        toast.success("Posted...");
+
+        router.refresh();
+        
+       
+
+
+      } else {
+        const { error } = await res.json();
+        toast.error(error);
+      }
+    });
+  }
 
   return (
     <form
       className="bg-gray-50 px-4 py-4 sm:px-16 flex-auto w-full"
-      onSubmit={(e: FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-
-        const lines = content?.split("\n");
-
-        console.log(lines);
-
-        if (lines === undefined) {
-          return;
-        }
-
-        let thisPayload: createType = {
-          background: theme,
-          lines: [],
-          title: "",
-        };
-        let target = e.target as HTMLElement;
-        let inputs = target.getElementsByTagName("input");
-
-        for (let index = 0; index < inputs.length; index++) {
-          console.log(inputs[index]);
-          let alignment = inputs[index].getAttribute("id")?.split("line")[1];
-
-          if (alignment === undefined) {
-            continue;
-          }
-
-          if (
-            alignment === "center" ||
-            alignment === "left" ||
-            alignment === "right"
-          )
-            thisPayload.lines.push({
-              line: lines[index],
-              align: alignment,
-              color: inputs[index].value,
-            });
-        }
-        thisPayload.title = title;
-
-        fetch("/api/poem/create", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(thisPayload),
-        }).then(async (res) => {
-          setLoading(false);
-          if (res.status === 200) {
-            toast.success("Posted...");
-            router.refresh();
-        
-            router.push("/");
-          } else {
-            const { error } = await res.json();
-            toast.error(error);
-          }
-        });
-      }}
+      onSubmit={createRequest}
     >
       <div className="py-4">
         <label

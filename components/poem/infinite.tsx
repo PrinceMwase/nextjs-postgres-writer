@@ -6,8 +6,6 @@ import React, { useContext, useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Create from "./create";
-import { usePathname, useSearchParams } from "next/navigation";
-
 export async function retrieveLikes() {
   return fetch("/api/poem/likes", {
     method: "GET",
@@ -25,8 +23,7 @@ export async function retrieveLikes() {
 }
 
 export default function Infinite({ writerId }: { writerId?: number }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+
   const [allPoems, setAllPoems] = useState<payload[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [likes, setLikes] = useState<number[] | null>(null);
@@ -75,7 +72,7 @@ export default function Infinite({ writerId }: { writerId?: number }) {
 
   useEffect(() => {
     fetchLikes();
-  }, [pathname, searchParams]);
+  }, []);
 
   return (
     <>
