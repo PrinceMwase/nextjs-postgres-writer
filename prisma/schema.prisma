@@ -11,33 +11,42 @@ datasource db {
 }
 
 model User {
-  id       Int        @id @default(autoincrement())
-  email    String     @unique
-  password String
-  PoemLike PoemLike[]
-  writer   Writer[]
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  password   String
+  PoemLike   PoemLike[]
+  writer     Writer[]
+  writerLike writerLike[]
+  userTags   userTags[]
 }
 
 model Writer {
-  id       Int       @id @default(autoincrement())
-  username String    @unique
-  userId   Int
-  Comment  Comment[]
-  Poem     Poem[]
-  user     User      @relation(fields: [userId], references: [id])
+  id         Int          @id @default(autoincrement())
+  username   String       @unique
+  userId     Int
+  Comment    Comment[]
+  Poem       Poem[]
+  user       User         @relation(fields: [userId], references: [id])
+  writerLike writerLike[]
+  about      String?
+  photoId    Int?
+  photo      Photo?       @relation(fields: [photoId], references: [id], onDelete: Cascade)
+
+  @@unique([id, photoId])
 }
 
 model Poem {
-  id         Int        @id @default(autoincrement())
-  title      String
-  content    Json
-  background String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  writerId   Int
-  comments   Comment[]
-  writer     Writer     @relation(fields: [writerId], references: [id])
-  PoemLike   PoemLike[]
+  id          Int        @id @default(autoincrement())
+  title       String
+  content     Json
+  background  String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  writerId    Int
+  comments    Comment[]
+  writer      Writer     @relation(fields: [writerId], references: [id])
+  PoemLike    PoemLike[]
+  description String?
 }
 
 model Comment {
@@ -62,4 +71,47 @@ model PoemLike {
 
   @@unique([userId, poemId])
   @@index([userId, poemId])
+}
+
+model writerLike {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  writerId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Writer    Writer   @relation(fields: [writerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, writerId])
+  @@index([userId, writerId])
+}
+
+model Tag {
+  id       Int        @id @default(autoincrement())
+  tag      String
+  userTags userTags[]
+}
+
+model userTags {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  tagId  Int
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tagId])
+}
+
+model Genre {
+  id      Int    @id @default(autoincrement())
+  genre   String
+  photoId Int    @unique
+  photo   Photo  @relation(fields: [photoId], references: [id], onDelete: Cascade)
+}
+
+model Photo {
+  id     Int      @id @default(autoincrement())
+  link   String
+  Writer Writer[]
+  Genre  Genre[]
 }
