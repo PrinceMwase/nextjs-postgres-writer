@@ -13,6 +13,8 @@ export default async function middleware(req: NextRequest) {
   });
 
     // If it's the root path, IT NEEDS AUTHENTICATION
+    console.log(session);
+    
     if (!session && path === "/") {
       return NextResponse.redirect(new URL("/login", req.url));
     }

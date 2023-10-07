@@ -18,6 +18,7 @@ model User {
   writer     Writer[]
   writerLike writerLike[]
   userTags   userTags[]
+  WriterMute WriterMute[]
 }
 
 model Writer {
@@ -31,6 +32,7 @@ model Writer {
   about      String?
   photoId    Int?
   photo      Photo?       @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  WriterMute WriterMute[]
 
   @@unique([id, photoId])
 }
@@ -74,6 +76,19 @@ model PoemLike {
 }
 
 model writerLike {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  writerId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Writer    Writer   @relation(fields: [writerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, writerId])
+  @@index([userId, writerId])
+}
+
+model WriterMute {
   id        Int      @id @default(autoincrement())
   userId    Int
   writerId  Int

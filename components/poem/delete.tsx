@@ -12,7 +12,7 @@ export default function Delete({ id, color }: DType) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const router = useRouter();
 
-  async function deletePoem() {
+  const request = async function deletePoem() {
     fetch("/api/poem/delete", {
       method: "POST",
       headers: {
@@ -58,7 +58,7 @@ export default function Delete({ id, color }: DType) {
 
             setIsModalVisible(false);
           }}
-          onConfirm={deletePoem}
+          onConfirm={request}
         />
       )}
     </span>

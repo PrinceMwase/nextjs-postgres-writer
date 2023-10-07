@@ -6,7 +6,8 @@ import React, { useContext, useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Create from "./create";
-export async function retrieveLikes() {
+
+export const retrieveLikes = async function retrieveLikesRequest() {
   return fetch("/api/poem/likes", {
     method: "GET",
     headers: {
@@ -30,12 +31,13 @@ export default function Infinite({ writerId }: { writerId?: number }) {
 
   const [skip, setSkip] = useState(0);
 
-  const fetchLikes = async () => {
+  const fetchLikes = async function likesRequest() {
     const result = await retrieveLikes();
     setLikes(result ? result : null);
     await fetchMorePosts();
   };
-  const fetchMorePosts = async () => {
+
+  const fetchMorePosts = async function postRequest() {
     try {
       fetch("/api/poem/infinite", {
         method: "POST",
@@ -121,4 +123,4 @@ export default function Infinite({ writerId }: { writerId?: number }) {
     </>
   );
 }
-// export default InfiniteScroll;
+

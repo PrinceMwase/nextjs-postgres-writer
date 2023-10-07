@@ -7,7 +7,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^4.14.0",
+    "@prisma/client": "^5.4.1",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
     "bcrypt": "^5.1.0",

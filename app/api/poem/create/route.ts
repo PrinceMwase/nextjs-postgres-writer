@@ -22,6 +22,10 @@ export async function POST(req: Request) {
     },
   });
 
+  if(!user){
+    return NextResponse.json({ error: "You are not authenticated" }, { status: 400 });
+  }
+
   // const writerId = user?.writer[0]?.id
   if (user?.writer.length !== undefined && user?.writer.length > 0) {
     const results = await prisma.poem.create({
@@ -41,8 +45,7 @@ export async function POST(req: Request) {
       );
     }
   } else {
-    console.log(user);
-    
+     
     return NextResponse.json({ success: "Failed to Create you are not a writer" }, { status: 400 });
   }
 }

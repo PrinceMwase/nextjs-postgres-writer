@@ -23,7 +23,7 @@ export async function GET(req: Request) {
       userId: user?.id,
     },
   });
-   const myResult = likes.map((like)=>{
+   const myResult = Array.from(likes, (like)=>{
     return like.poemId
   })
   

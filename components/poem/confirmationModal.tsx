@@ -7,11 +7,11 @@ const ConfirmationModal = ({
 }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
+      <div className="bg-white p-8 rounded-lg shadow-lg text-black">
         <p className="text-xl font-semibold capitalize">delete poem?</p>
-        <p className="mb-4">
-          This can't be undone and it will be removed from this platform
-          entirely
+        <p className="mb-4 text-sm md:text-normal">
+          This can't be undone and It will be removed from this platform
+          forever
         </p>
         <div className="flex justify-end">
           <button

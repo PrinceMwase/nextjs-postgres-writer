@@ -119,7 +119,9 @@ export default function ViewPoem({
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               id="comment"
-              className="my-1 block w-full appearance-none rounded-none border-b-2 h-full border-gray-300 px-4 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+              className={`${
+                myPayload.background == "dark" ? "bg-slate-900 text-white" : "bg-slate-50 text-black"
+              } my-1 block w-full appearance-none rounded-none border-b-2 h-full border-gray-300 px-4 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm`}
             />
 
             {/* send button */}

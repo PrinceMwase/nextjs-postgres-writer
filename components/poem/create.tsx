@@ -6,8 +6,11 @@ import LoadingDots from "../loading-dots";
 
 import { createType } from "../../types/poem";
 import { usePathname, useRouter } from "next/navigation";
+import { useSession, getSession } from "next-auth/react"
+
 
 export default function CreatePoem() {
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -15,8 +18,25 @@ export default function CreatePoem() {
   const [title, setTitle] = useState<string>("");
   const [preview, setPreview] = useState<boolean>(false);
   const [confirm, setConfirmation] = useState<boolean>(false);
+  const { data: session, status } = useSession()
+
+  if (status === "loading") {
+    return <p>Loading...</p>
+  }
+
+  if (status === "unauthenticated") {
+    return <p>Access Denied</p>
+  }
+
+  const reset = function resetStates(){
+    setLoading(false);
+    setContent("");
+    setTitle("");
+    setPreview(false);
+    setConfirmation(false);
+  }
   
-  function createRequest(e: FormEvent) {
+  const request = function request(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
 
@@ -25,20 +45,25 @@ export default function CreatePoem() {
     console.log(lines);
 
     if (lines === undefined) {
+      reset()
+      return;
+    }
+    if(lines.length === 1 && lines[0].trim().length === 0  ){
+      reset()
       return;
     }
 
-    let thisPayload: createType = {
+    const thisPayload: createType = {
       background: theme,
       lines: [],
       title: "",
     };
-    let target = e.target as HTMLElement;
-    let inputs = target.getElementsByTagName("input");
+    const target = e.target as HTMLElement;
+    const inputs = target.getElementsByTagName("input");
 
     for (let index = 0; index < inputs.length; index++) {
       console.log(inputs[index]);
-      let alignment = inputs[index].getAttribute("id")?.split("line")[1];
+      const alignment = inputs[index].getAttribute("id")?.split("line")[1];
 
       if (alignment === undefined) {
         continue;
@@ -67,28 +92,29 @@ export default function CreatePoem() {
       setLoading(false);
       if (res.status === 200) {
         toast.success("Posted...");
-
+        reset();
         router.refresh();
         
-       
-
-
       } else {
         const { error } = await res.json();
         toast.error(error);
+        reset()
       }
-    });
+    }).catch((error)=>{
+      toast.error(error);
+      reset();
+    })
   }
 
   return (
     <form
       className="bg-gray-50 px-4 py-4 sm:px-16 flex-auto w-full"
-      onSubmit={createRequest}
+      onSubmit={request}
     >
       <div className="py-4">
         <label
           htmlFor="content"
-          className="block text-xs text-gray-600 opacity-80 hover:opacity-100 cursor-pointer uppercase fixed bg-white"
+          className="block text-xs text-gray-600 opacity-80 hover:opacity-100 cursor-pointer uppercase fixed bg-slate-50"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -116,12 +142,12 @@ export default function CreatePoem() {
               onChange={(e) => {
                 setContent(e.currentTarget.value);
               }}
-              className="my-1 block w-full appearance-none rounded-md border h-full border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+              className="my-1 border-b-2 block w-full appearance-none h-full border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
             ></textarea>
           )}
           {preview && (
             <div
-              className={`h-full lg:w-fit m-auto  overflow-auto p-8 ${
+              className={`h-full w-full m-auto  overflow-auto p-8 ${
                 theme == "dark" ? "bg-slate-900" : "bg-slate-50"
               }`}
             >
@@ -147,15 +173,22 @@ export default function CreatePoem() {
           )}
         </div>
 
-        <div className="px-8">
+        <div className="px-8 mb-4">
           <label
             htmlFor="mode"
             className="block text-xs text-gray-600 uppercase"
           >
-            Dark Background
+           {theme == 'light' ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+</svg>: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+</svg>
+
+}
           </label>
           <input
             type="checkbox"
+            hidden
             onChange={(e) => {
               if (e.target.checked) {
                 setTheme("dark");
@@ -179,7 +212,7 @@ export default function CreatePoem() {
               placeholder="Title"
               name="title"
               id="title"
-              className="my-1 block w-full appearance-none rounded-md border h-full border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+              className="my-1 block w-full border-b-2 h-full border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
             />
           )}
         </div>
@@ -215,7 +248,7 @@ export default function CreatePoem() {
                   "Post"
                 )
               ) : (
-                "Confirm?"
+                "Confirm"
               )}{" "}
             </button>
           )}
