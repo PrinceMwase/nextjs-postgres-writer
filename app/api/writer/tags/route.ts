@@ -1,78 +1,85 @@
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import prisma from "../../../../lib/prisma";
-import { getServerSession } from "next-auth/next";
-import { poemLikeType } from "../../../../types/like";
 
 export async function GET(req: Request) {
   const session = await getServerSession();
 
-  if(!session){
-    return NextResponse.json({ error: 'not authenticated' }, { status: 200 });
+  if (!session) {
+    return NextResponse.json({ error: "not authenticated" }, { status: 304 });
   }
   const user = await prisma.user.findUnique({
     select: {
-        id:true
+      id: true,
     },
     where: {
       email: session?.user?.email,
     },
   });
-    
-  let likes = await prisma.poemLike.findMany({
+
+  let tags = await prisma.userTags.findMany({
     select: {
-      poemId: true,
+      tag:{
+        select: {
+            tag: true
+        }
+      }
     },
     where: {
       userId: user?.id,
     },
   });
-   const myResult = Array.from(likes, (like)=>{
-    return like.poemId
-  })
-  
-  
-  
-  return NextResponse.json({ myResult }, { status: 200 });
+//   const myResult = Array.from(tags, (tag) => {
+//     return tag.tagId;
+//   });
+
+  return NextResponse.json({ tags }, { status: 200 });
 }
 
 export async function POST(req: Request) {
-  const reqValues = await req.json();
+  const reqValues:{
+    tagId: number
+  } = await req.json();
   const session = await getServerSession();
+
+  if(!session){
+    return NextResponse.json({ error: "not authenticated" }, { status: 304 });
+  }
+
   const user = await prisma.user.findUnique({
     select: {
-        id:true
+      id: true,
     },
     where: {
       email: session?.user?.email,
     },
   });
 
-  const result = await prisma.poemLike.create({
+  const result = await prisma.userTags.create({
     data: {
-      poemId: reqValues.poemId,
+      tagId: reqValues.tagId,
       userId: user?.id,
     },
   });
   return NextResponse.json({ result }, { status: 200 });
 }
 
-
 export async function DELETE(req: Request) {
-
-  const reqValues = await req.json();
+  const reqValues:{
+    tagId: number
+  } = await req.json();
   const session = await getServerSession();
   const user = await prisma.user.findUnique({
     select: {
-        id:true
+      id: true,
     },
     where: {
       email: session?.user?.email,
     },
   });
 
-  const result = await prisma.poemLike.delete({
+  const result = await prisma.userTags.delete({
     where: {
-      userId_poemId: { userId: user?.id, poemId: reqValues.poemId },
+      userId_tagId: { userId: user?.id, tagId: reqValues.tagId },
     },
   });
 

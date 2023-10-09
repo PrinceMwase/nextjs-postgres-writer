@@ -24,7 +24,7 @@ model User {
 model Writer {
   id         Int          @id @default(autoincrement())
   username   String       @unique
-  userId     Int
+  userId     Int          @unique
   Comment    Comment[]
   Poem       Poem[]
   user       User         @relation(fields: [userId], references: [id])
