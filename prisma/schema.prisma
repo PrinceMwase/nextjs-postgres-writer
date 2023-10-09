@@ -103,7 +103,7 @@ model WriterMute {
 
 model Tag {
   id       Int        @id @default(autoincrement())
-  tag      String
+  tag      String @unique
   userTags userTags[]
 }
 
