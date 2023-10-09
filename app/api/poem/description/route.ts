@@ -1,8 +1,10 @@
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma"
 
 // update a poem's description
 export async function POST(req: Request) {
+
   const reqValues: {
     description: string;
     poemId: number
@@ -24,7 +26,7 @@ export async function POST(req: Request) {
 
   const writer = await prisma.writer.update({
     where: {
-      userId: user.id,
+      userId: user?.id,
     },
     data:{
         Poem:{
