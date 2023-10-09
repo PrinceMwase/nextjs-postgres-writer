@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-export default function WriterLike({
+export default function WriterMute({
   poemId,
-  isLiked,
+  isMute,
 }: {
   poemId: number;
-  isLiked: boolean;
+  isMute: boolean;
 }) {
-  const [like, setLike] = useState<boolean>();
+  const [mute, setMute] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setLike(isLiked);
+    setMute(isMute);
   }, []);
 
   const request = function toggleWriterLike() {
     setLoading(true)
-    fetch("/api/writer/likes", {
+    fetch("/api/writer/mutes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,16 +28,17 @@ export default function WriterLike({
     }).then( (response) =>{
         if(response.status == 200){
             
-            setLike(true)
+            setMute(true)
         }
         return response
     } ).catch((error)=>{
         
         toast.error('something happened')
+        
     }).finally(()=>{
         setLoading(false)
     })
   };
 
-  return <button disabled={loading} onClick={request}>{like ? "liked" : "not liked"}</button>;
+  return <button disabled={loading}  onClick={request}>{mute ? "muted" : "not mute"}</button>;
 }
