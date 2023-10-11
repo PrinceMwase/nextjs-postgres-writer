@@ -3,6 +3,8 @@ CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "firstname" TEXT,
+    "lastname" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -27,6 +29,7 @@ CREATE TABLE "Poem" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "writerId" INTEGER NOT NULL,
+    "genreId" INTEGER,
     "description" TEXT,
 
     CONSTRAINT "Poem_pkey" PRIMARY KEY ("id")
@@ -64,6 +67,17 @@ CREATE TABLE "writerLike" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "writerLike_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "WriterMute" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "writerId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "WriterMute_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -107,6 +121,9 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Writer_username_key" ON "Writer"("username");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Writer_userId_key" ON "Writer"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Writer_id_photoId_key" ON "Writer"("id", "photoId");
 
 -- CreateIndex
@@ -122,6 +139,15 @@ CREATE INDEX "writerLike_userId_writerId_idx" ON "writerLike"("userId", "writerI
 CREATE UNIQUE INDEX "writerLike_userId_writerId_key" ON "writerLike"("userId", "writerId");
 
 -- CreateIndex
+CREATE INDEX "WriterMute_userId_writerId_idx" ON "WriterMute"("userId", "writerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "WriterMute_userId_writerId_key" ON "WriterMute"("userId", "writerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Tag_tag_key" ON "Tag"("tag");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "userTags_userId_tagId_key" ON "userTags"("userId", "tagId");
 
 -- CreateIndex
@@ -135,6 +161,9 @@ ALTER TABLE "Writer" ADD CONSTRAINT "Writer_photoId_fkey" FOREIGN KEY ("photoId"
 
 -- AddForeignKey
 ALTER TABLE "Poem" ADD CONSTRAINT "Poem_writerId_fkey" FOREIGN KEY ("writerId") REFERENCES "Writer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Poem" ADD CONSTRAINT "Poem_genreId_fkey" FOREIGN KEY ("genreId") REFERENCES "Genre"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_poemId_fkey" FOREIGN KEY ("poemId") REFERENCES "Poem"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -153,6 +182,12 @@ ALTER TABLE "writerLike" ADD CONSTRAINT "writerLike_userId_fkey" FOREIGN KEY ("u
 
 -- AddForeignKey
 ALTER TABLE "writerLike" ADD CONSTRAINT "writerLike_writerId_fkey" FOREIGN KEY ("writerId") REFERENCES "Writer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "WriterMute" ADD CONSTRAINT "WriterMute_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "WriterMute" ADD CONSTRAINT "WriterMute_writerId_fkey" FOREIGN KEY ("writerId") REFERENCES "Writer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "userTags" ADD CONSTRAINT "userTags_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE CASCADE ON UPDATE CASCADE;

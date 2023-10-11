@@ -4,20 +4,50 @@ import Image from "next/image";
 import Details from "@/components/writer/writerDetail";
 import Featured from "@/components/writer/featured";
 import Categories from "@/components/writer/categories";
+import profile from "types/profile";
+import { useState, useEffect } from "react";
 
 export default function Profile() {
+  const [profile, setProfile] = useState<profile>();
+
+  const request = async function retrieveProfile() {
+    await fetch("/api/profile", {
+      method: "GET",
+    }).then(async (response) => {
+      if (response.ok) {
+        const data = await response.json();
+
+        console.log(data);
+        
+        const user: profile = data.user;
+
+        setProfile(user);
+      }
+    });
+  };
+
+  useEffect(() => {
+    request();
+  }, []);
+
   return (
-    <div className="flex flex-row m-20 h-screen">
-      <div className="basis-1/4 ">
-        <Details />
+    <div className="flex flex-col lg:flex-row m-10 h-screen">
+      <div className="sm:w-full  mb-4 lg:mb-0 lg:basis-1/3">
+        {profile !== undefined && (
+          <Details
+            firstname={profile.firstname}
+            lastname={profile.lastname}
+            userTags={profile.userTags}
+            pfp={profile.writer[0].photo?.link}
+            about={profile.writer[0].about}
+            username={profile.writer[0].username}
+          />
+        )}
       </div>
 
-      <div className="basis-3/4   ">
+      <div className="sm:w-full  mb-4 lg:mb-0">
         <Featured />
-
-        {/* categories */}
-        <Categories/>
-
+        <Categories />
       </div>
     </div>
   );

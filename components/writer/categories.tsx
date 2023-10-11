@@ -32,7 +32,7 @@ export default function Categories() {
           <div>
             <span className="">
               <Image
-                src="/haiku2.jpeg"
+                src="/haiku.jpeg"
                 width={50}
                 height={50}
                 alt="Picture of the author"

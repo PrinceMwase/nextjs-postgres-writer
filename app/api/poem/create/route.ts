@@ -7,8 +7,6 @@ export async function POST(req: Request) {
   const payload: createType = await req.json();
   const session = await getServerSession();
 
- 
-
   const user = await prisma.user.findUnique({
     select: {
       writer: {
@@ -22,8 +20,11 @@ export async function POST(req: Request) {
     },
   });
 
-  if(!user){
-    return NextResponse.json({ error: "You are not authenticated" }, { status: 400 });
+  if (!user) {
+    return NextResponse.json(
+      { error: "You are not authenticated" },
+      { status: 400 }
+    );
   }
 
   // const writerId = user?.writer[0]?.id
@@ -34,6 +35,7 @@ export async function POST(req: Request) {
         title: payload.title,
         content: JSON.stringify(payload.lines),
         writerId: user?.writer[0].id ? user?.writer[0].id : 1,
+        description: payload.description ?? "",
       },
     });
     if (results) {
@@ -45,7 +47,9 @@ export async function POST(req: Request) {
       );
     }
   } else {
-     
-    return NextResponse.json({ success: "Failed to Create you are not a writer" }, { status: 400 });
+    return NextResponse.json(
+      { success: "Failed to Create you are not a writer" },
+      { status: 400 }
+    );
   }
 }

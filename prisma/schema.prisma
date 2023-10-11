@@ -14,6 +14,8 @@ model User {
   id         Int          @id @default(autoincrement())
   email      String       @unique
   password   String
+  firstname  String?
+  lastname   String?
   PoemLike   PoemLike[]
   writer     Writer[]
   writerLike writerLike[]
@@ -44,9 +46,11 @@ model Poem {
   background  String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  writerId    Int
   comments    Comment[]
+  writerId    Int
   writer      Writer     @relation(fields: [writerId], references: [id])
+  genreId     Int?
+  genre       Genre?      @relation(fields: [genreId], references: [id])
   PoemLike    PoemLike[]
   description String?
 }
@@ -103,7 +107,7 @@ model WriterMute {
 
 model Tag {
   id       Int        @id @default(autoincrement())
-  tag      String @unique
+  tag      String     @unique
   userTags userTags[]
 }
 
@@ -122,6 +126,7 @@ model Genre {
   genre   String
   photoId Int    @unique
   photo   Photo  @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  Poem    Poem[]
 }
 
 model Photo {

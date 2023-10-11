@@ -4,9 +4,9 @@ import Link from "next/link";
 
 export default function Featured() {
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-col lg:flex-row">
       {/* First Column */}
-      <div className="basis-1/3 p-6 ">
+      <div className="basis-1/3 p-4 ">
         <div>
           <h1 className="text-lg text-left">
             <Link
@@ -42,7 +42,7 @@ export default function Featured() {
       </div>
 
       {/* Second column */}
-      <div className="basis-1/3 p-6 ">
+      <div className="basis-1/3 p-4 ">
         <div>
           <h1 className="text-lg text-left">
             <Link
@@ -77,7 +77,7 @@ export default function Featured() {
       </div>
 
       {/* Third Column */}
-      <div className="basis-1/3 p-6 ">
+      <div className="basis-1/3 p-4 ">
         <div>
           <h1 className="text-lg text-left">
             <Link

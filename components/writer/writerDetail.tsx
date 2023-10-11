@@ -1,24 +1,49 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect } from "react";
 
-export default function Details() {
+type props = {
+  firstname: string | null;
+  lastname: string | null;
+  userTags: {
+    tag: {
+      tag: string
+    };
+  }[];
+  pfp: string | undefined
+  about: string | null
+  username: string
+
+}
+
+export default function Details({...props}:props) {
+ 
+  const {username, userTags, about, firstname, lastname, pfp} = props 
+
+  useEffect(()=>{
+    console.log(props);
+    
+    console.log(username);
+    
+  },[])
+  
   return (
     <>
       {/* profile image  */}
-      <div className="p-2">
+      <div className="p-4">
         <Image
-          src="/pfp.jpeg"
-          width={600}
-          height={600}
+          src={pfp ?? "/pfp.jpeg"}
+          width={400}
+          height={400}
           alt="Picture of the author"
-          className="rounded-full"
+          className="rounded-full m-auto"
         />
       </div>
 
       {/* user details */}
       <div className="px-2 space-y-4">
-        <span className="font-bold block text-4xl font-maglite">Goonie</span>
+        <span className="font-bold block text-4xl font-maglite">{username}</span>
 
         <div className="flex space-x-2">
           <span>
@@ -37,7 +62,7 @@ export default function Details() {
               />
             </svg>
           </span>
-          <span className="font-medium">Prince Mwase</span>
+          <span className="font-medium">{firstname}{' '}{lastname}</span>
         </div>
 
         <div className="flex space-x-2">
@@ -57,13 +82,17 @@ export default function Details() {
           </svg>
 
           <span className="text-lg text-gray-600">
-            i write poems for breakfast, lunch and dinner
+            {about}
           </span>
         </div>
 
         <div className="flex space-x-4">
 
-          <span className="flex">
+         
+          
+          {
+            userTags.map((value, key)=>{
+             return  <span className="flex" key={key}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -78,47 +107,16 @@ export default function Details() {
                 d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5"
               />
             </svg>
-            romantic
+            {value.tag.tag}
           </span>
-          <span className="flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5"
-              />
-            </svg>
-            dark
-          </span>
-          <span className="flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5"
-              />
-            </svg>
-            ballad
-          </span>
+            })
+          }
+
         </div>
       </div>
 
       {/* user icons */}
-      <div className="flex space-x-4 p-2">
+      <div className="flex space-x-4 p-4">
         <span>
           <svg
             xmlns="http://www.w3.org/2000/svg"

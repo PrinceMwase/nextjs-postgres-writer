@@ -7,6 +7,7 @@ export type createType = {
     background: "light" | "dark";
     lines: LineProperty[];
     title: string;
+    description: string | undefined
   };
   
 export type LineType = {
