@@ -8,6 +8,7 @@ export type createType = {
     lines: LineProperty[];
     title: string;
     description: string | undefined
+    genreId: number | null
   };
   
 export type LineType = {

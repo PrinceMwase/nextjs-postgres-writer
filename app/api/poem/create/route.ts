@@ -36,6 +36,7 @@ export async function POST(req: Request) {
         content: JSON.stringify(payload.lines),
         writerId: user?.writer[0].id ? user?.writer[0].id : 1,
         description: payload.description ?? "",
+        genreId: payload.genreId
       },
     });
     if (results) {

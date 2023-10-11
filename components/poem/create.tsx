@@ -17,8 +17,9 @@ export default function CreatePoem() {
   const [description, setDescription] = useState<string>("");
   const [preview, setPreview] = useState<boolean>(false);
   const [confirm, setConfirmation] = useState<boolean>(false);
+  const [genre, setGenre] = useState<number | null>(null);
   const { data: session, status } = useSession();
-
+  
   if (status === "loading") {
     return <p>Loading...</p>;
   }
@@ -65,6 +66,7 @@ export default function CreatePoem() {
       lines: [],
       title: "",
       description: description.trim().length === 0 ? undefined : description,
+      genreId: genre
     };
     const target = e.target as HTMLElement;
     const inputs = target.getElementsByTagName("input");
@@ -289,7 +291,11 @@ export default function CreatePoem() {
               </button>
               {confirm && (
                 <>
-                <GenreDropDown className="capitalize" />
+                <GenreDropDown className="capitalize" onChange={(e)=>{
+                  const id = parseInt(e.target.value)
+
+                  setGenre(id)
+                }} />
                   <input
                     type="text"
                     value={description}
