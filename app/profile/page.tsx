@@ -4,11 +4,12 @@ import Image from "next/image";
 import Details from "@/components/writer/writerDetail";
 import Featured from "@/components/writer/featured";
 import Categories from "@/components/writer/categories";
-import profile from "types/profile";
+import profile, { ProfilePoemType } from "types/profile";
 import { useState, useEffect } from "react";
 
 export default function Profile() {
   const [profile, setProfile] = useState<profile>();
+  const [poems, setPoems] = useState<ProfilePoemType[] | null>(null);
 
   const request = async function retrieveProfile() {
     await fetch("/api/profile", {
@@ -21,6 +22,7 @@ export default function Profile() {
         
         const user: profile = data.user;
 
+        setPoems(user.writer[0].Poem)
         setProfile(user);
       }
     });
@@ -46,7 +48,7 @@ export default function Profile() {
       </div>
 
       <div className="sm:w-full  mb-4 lg:mb-0">
-        <Featured />
+        {poems && <Featured poems={poems}/>}
         <Categories />
       </div>
     </div>

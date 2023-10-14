@@ -12,17 +12,21 @@ type profile = {
     photo: {
       link: string;
     } | null;
-    Poem: {
-      title: string;
-      description: string;
-      background: string;
-      genre: {
-        genre: string;
-        photo: {
-          link: string;
-        };
-      } | null;
-    };
+    Poem: ProfilePoemType[] | null;
   }[];
 };
 export default profile;
+
+export type ProfilePoemType = {
+  
+    title: string;
+    description: string;
+    background: string;
+    genre: {
+      genre: string;
+      photo: {
+        link: string;
+      };
+    } | null;
+  
+}
