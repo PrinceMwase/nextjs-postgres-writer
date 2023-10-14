@@ -1,7 +1,8 @@
-const chunkArray = (array: any[], size: number) => {
-    return Array.from({ length: Math.ceil(array.length / size) }, (v, index) =>
-      array.slice(index * size, index * size + size)
-    );
-  };
+const chunkArray = <T>(array: T[], size: number): T[][] => {
+  return Array.from({ length: Math.ceil(array.length / size) }, (_, index) =>
+    array.slice(index * size, index * size + size)
+  );
+};
+
 
 export default chunkArray
