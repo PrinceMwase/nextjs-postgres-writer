@@ -7,6 +7,7 @@ import GenreDropDown from "@/components/genreDropDown";
 import { createType } from "../../types/poem";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, getSession } from "next-auth/react";
+import LightOrDarkLabel from "./lightOrDark";
 
 export default function CreatePoem() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function CreatePoem() {
   const [confirm, setConfirmation] = useState<boolean>(false);
   const [genre, setGenre] = useState<number | null>(null);
   const { data: session, status } = useSession();
-  
+
   if (status === "loading") {
     return <p>Loading...</p>;
   }
@@ -66,7 +67,7 @@ export default function CreatePoem() {
       lines: [],
       title: "",
       description: description.trim().length === 0 ? undefined : description,
-      genreId: genre
+      genreId: genre,
     };
     const target = e.target as HTMLElement;
     const inputs = target.getElementsByTagName("input");
@@ -163,7 +164,7 @@ export default function CreatePoem() {
               }`}
             >
               <span
-                className="font-bold  py-4 block"
+                className="tracking-wider font-bold  py-4 block"
                 style={{ color: theme == "light" ? "#000000" : "#ffffff" }}
               >
                 {title}
@@ -185,42 +186,11 @@ export default function CreatePoem() {
         </div>
 
         <div className="px-8 mb-4">
-          <label
+          <LightOrDarkLabel
             htmlFor="mode"
             className="block text-xs text-gray-600 uppercase"
-          >
-            {theme == "light" ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
-                />
-              </svg>
-            )}
-          </label>
+            theme={theme}
+          />
           <input
             type="checkbox"
             hidden
@@ -256,7 +226,7 @@ export default function CreatePoem() {
           {!confirm && (
             <>
               <button
-                className="h-10 px-6 font-semibold rounded-md bg-black text-white"
+                className="h-10 px-6 font-semibold rounded-none bg-black text-white"
                 onClick={() => setPreview((value) => !value)}
                 type="button"
               >
@@ -291,11 +261,14 @@ export default function CreatePoem() {
               </button>
               {confirm && (
                 <>
-                <GenreDropDown className="capitalize" onChange={(e)=>{
-                  const id = parseInt(e.target.value)
+                  <GenreDropDown
+                    className="capitalize"
+                    onChange={(e) => {
+                      const id = parseInt(e.target.value);
 
-                  setGenre(id)
-                }} />
+                      setGenre(id);
+                    }}
+                  />
                   <input
                     type="text"
                     value={description}
@@ -305,7 +278,6 @@ export default function CreatePoem() {
                     className="w-full inline border-b-2 h-10 border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                     placeholder="Add a short description here"
                   />
-                  
                 </>
               )}
             </>
