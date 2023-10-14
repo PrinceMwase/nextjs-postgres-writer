@@ -10,6 +10,11 @@ import { useState, useEffect } from "react";
 export default function Profile() {
   const [profile, setProfile] = useState<profile>();
   const [poems, setPoems] = useState<ProfilePoemType[] | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setIsOpen(!isOpen);
+  };
 
   const request = async function retrieveProfile() {
     await fetch("/api/profile", {
@@ -33,7 +38,17 @@ export default function Profile() {
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row m-10 h-screen">
+    <div className="flex flex-col lg:flex-row p-10 h-screen">
+      {/* Drawer */}
+      <div
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white p-4 transform transition-transform ease-in-out duration-300 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Drawer Content */}
+        {/* Add your drawer content here */}
+      </div>
+
       <div className="sm:w-full  mb-4 lg:mb-0 lg:basis-1/3">
         {profile !== undefined && (
           <Details
@@ -55,6 +70,12 @@ export default function Profile() {
             <Categories poems={poems} />
           </>
         )}
+        <button
+          onClick={toggleDrawer}
+          className="bg-blue-500 text-white p-2 rounded"
+        >
+          Toggle Drawer
+        </button>
       </div>
     </div>
   );
