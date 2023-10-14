@@ -4,13 +4,16 @@ import Image from "next/image";
 import { ProfilePoemType } from "types/profile";
 
 export default function Categories({ poems }: { poems: ProfilePoemType[] }) {
+  const uniqueCategoriesSet = new Set<string>();
+
   const categories = poems
-    .map((poem) => poem.genre) // Extract genres from poems
+    .map((poem) => poem.genre)
     .filter(
       (genre): genre is { genre: string; photo: { link: string } } =>
-        genre !== null
-    ); // Filter out null genres
-
+        genre !== null &&
+        !uniqueCategoriesSet.has(genre.genre) &&
+        uniqueCategoriesSet.add(genre.genre)
+    );
   return (
     <>
       <div className="flex py-2">
