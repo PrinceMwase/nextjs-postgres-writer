@@ -1,8 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { ProfilePoemType } from "types/profile";
 
-export default function Categories() {
+export default function Categories({ poems }: { poems: ProfilePoemType[] }) {
+  const categories = poems
+    .map((poem) => poem.genre) // Extract genres from poems
+    .filter(
+      (genre): genre is { genre: string; photo: { link: string } } =>
+        genre !== null
+    ); // Filter out null genres
+
   return (
     <>
       <div className="flex py-2">
@@ -21,89 +29,26 @@ export default function Categories() {
               d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z"
             />
           </svg>
-          <span>Popular Categories</span>
+          <span>Recent Categories</span>
         </p>
       </div>
 
       <div className="flex py-2">
         <div className="m-auto flex space-x-10">
-          
-          {/* romantic */}
-          <div>
-            <span className="">
-              <Image
-                src="/haiku.jpeg"
-                width={50}
-                height={50}
-                alt="Picture of the author"
-                className="rounded-full m-auto"
-              />
-              <span className="m-auto">HAIKU</span>
-            </span>
-          </div>
-          {/* End love */}
-          
-          {/* limerick */}
-          <div>
-            <span className="">
-              <Image
-                src="/limerick.jpeg"
-                width={50}
-                height={50}
-                alt="Picture of the author"
-                className="rounded-full m-auto"
-              />
-              <span className="m-auto">Limerick</span>
-            </span>
-          </div>
-          {/* End limerick */}
-          
-          {/* ekphrastic */}
-          <div>
-            <span className="">
-              <Image
-                src="/ekphrastic.jpeg"
-                width={50}
-                height={50}
-                alt="Picture of the author"
-                className="rounded-full m-auto"
-              />
-              <span className="m-auto">Ekphrastic</span>
-            </span>
-          </div>
-          {/* End love */}
-          
-          {/* sonnet */}
-          <div>
-            <span className="">
-              <Image
-                src="/sonnet.jpeg"
-                width={50}
-                height={50}
-                alt="Picture of the author"
-                className="rounded-full m-auto"
-              />
-              <span className="m-auto">Sonnet</span>
-            </span>
-          </div>
-          {/* End love */}
-          
-          {/* blason */}
-          <div>
-            <span className="">
-              <Image
-                src="/blason.jpeg"
-                width={50}
-                height={50}
-                alt="Picture of the author"
-                className="rounded-full m-auto"
-              />
-              <span className="m-auto">Blason</span>
-            </span>
-          </div>
-          {/* End love */}
-
-          
+          {categories.map((category, index) => (
+            <div key={index}>
+              <span className="">
+                <Image
+                  src={category.photo.link}
+                  width={50}
+                  height={50}
+                  alt={`Picture of ${category.genre}`}
+                  className="rounded-full m-auto"
+                />
+                <span className="m-auto">{category.genre}</span>
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </>

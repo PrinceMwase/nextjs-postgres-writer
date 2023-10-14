@@ -19,10 +19,10 @@ export default function Profile() {
         const data = await response.json();
 
         console.log(data);
-        
+
         const user: profile = data.user;
 
-        setPoems(user.writer[0].Poem)
+        setPoems(user.writer[0].Poem);
         setProfile(user);
       }
     });
@@ -48,8 +48,13 @@ export default function Profile() {
       </div>
 
       <div className="sm:w-full  mb-4 lg:mb-0">
-        {poems && <Featured poems={poems}/>}
-        <Categories />
+        {poems && (
+          <>
+            <Featured poems={poems} />
+
+            <Categories poems={poems} />
+          </>
+        )}
       </div>
     </div>
   );
