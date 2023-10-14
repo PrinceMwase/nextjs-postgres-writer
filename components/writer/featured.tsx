@@ -17,14 +17,14 @@ export default function Featured({ poems }: { poems: ProfilePoemType[] }) {
             <div key={poemIndex}>
               <h1 className="text-lg text-left">
                 <Link
-                  className="no-underline hover:underline font-bold tracking-wider py-4 block"
+                  className="no-underline hover:underline font-bold tracking-wider my-4 block"
                   style={{ color: "black" }}
                   href={`/poem/${columnIndex * chunkSize + poemIndex + 1}`}
                 >
                   {poem.title}
                 </Link>
               </h1>
-              <div className="description">{poem.description}</div>
+              {poem.description ? <div className="description">{`${poem.description.slice(0,150).trim()}${poem.description.length > 150 ? '...' : '.'}`}</div> : <div className="description">No Description</div>}
             </div>
           ))}
         </div>
