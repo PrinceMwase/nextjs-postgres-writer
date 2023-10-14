@@ -16,7 +16,7 @@ export function Read({
     <div>
       <p
         style={{ color, textAlign }}
-        className="text-lg font-light font-zapf overflow-auto w-full"
+        className="text-sm font-semibold font-zapf overflow-auto w-full"
       >
         {text}
       </p>
@@ -49,7 +49,7 @@ export default function Line({
     <>
       <p
         style={{ color, textAlign: align }}
-        className="text-lg font-light font-zapf"
+        className="text-sm font-semibold font-zapf"
       >
         {!confirm && (
           <>
