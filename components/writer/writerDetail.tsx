@@ -3,30 +3,17 @@
 import Image from "next/image";
 import { useEffect } from "react";
 
-type props = {
-  firstname: string | null;
-  lastname: string | null;
-  userTags: {
-    tag: {
-      tag: string
-    };
-  }[];
-  pfp: string | undefined
-  about: string | null
-  username: string
+import { userDefinitions} from "types/profile";
 
+interface Props extends userDefinitions {
+  pfp: string | undefined;
+  about: string | null;
+  username: string;
 }
 
-export default function Details({...props}:props) {
+export default function Details({username, userTags, about, firstname, lastname, pfp}:Props) {
  
-  const {username, userTags, about, firstname, lastname, pfp} = props 
 
-  useEffect(()=>{
-    console.log(props);
-    
-    console.log(username);
-    
-  },[])
   
   return (
     <>
