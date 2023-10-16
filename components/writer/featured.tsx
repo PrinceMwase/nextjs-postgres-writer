@@ -1,6 +1,6 @@
 "use client";
 
-import chunkArray from "@/lib/chuckArray";
+import chunkArray from "@/lib/chunkArray";
 import Link from "next/link";
 import { ProfilePoemType } from "types/profile";
 
