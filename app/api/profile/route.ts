@@ -3,7 +3,7 @@ import { auth } from "../../../lib/auth";
 import prisma from "../../../lib/prisma";
 
 export async function GET(request: Request) {
-  console.log("getting values");
+  
 
   //   const { userEmail }: { userEmail: string | undefined } = await request.json();
   const authStatus = await auth();
