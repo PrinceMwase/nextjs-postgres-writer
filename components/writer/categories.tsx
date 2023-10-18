@@ -43,12 +43,12 @@ export default function Categories({ poems }: { poems: ProfilePoemType[] }) {
               <span className="">
                 <Image
                   src={category.photo.link}
-                  width={50}
-                  height={50}
+                  width={100}
+                  height={100}
                   alt={`Picture of ${category.genre}`}
                   className="rounded-full m-auto"
                 />
-                <span className="m-auto">{category.genre}</span>
+                <div className="m-auto w-full text-center text-ellipsis capitalize font-semibold">{category.genre}</div>
               </span>
             </div>
           ))}

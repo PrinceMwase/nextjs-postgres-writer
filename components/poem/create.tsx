@@ -126,7 +126,7 @@ export default function CreatePoem() {
       <div className="py-4">
         <label
           htmlFor="content"
-          className="block text-xs text-gray-600 opacity-80 hover:opacity-100 cursor-pointer uppercase fixed bg-slate-50"
+          className="block text-xs text-gray-600 opacity-100 cursor-pointer uppercase"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

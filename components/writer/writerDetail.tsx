@@ -78,7 +78,7 @@ export default function Details({username, userTags, about, firstname, lastname,
          
           
           {
-            userTags.map((value, key)=>{
+            userTags && userTags.map((value, key)=>{
              return  <span className="flex" key={key}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

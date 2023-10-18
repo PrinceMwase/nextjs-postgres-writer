@@ -36,7 +36,22 @@ export default async function RootLayout({
       <body className={inter.variable}>
         <Toaster />
         <Navbar />
+        {/* Drawer */}
+
         {children}
+        <div
+          id="drawer"
+          className="fixed inset-y-0 left-0 w-64 bg-gray-800 text-white p-4 transform transition-transform ease-in-out duration-300 -translate-x-full"
+        >
+          {/* Drawer Content */}
+          {/* Add your drawer content here */}
+          <button
+            id="close-drawer-button"
+            className="bg-red-500 text-white p-2 rounded"
+          >
+            Close Drawer
+          </button>
+        </div>
       </body>
     </html>
   );
