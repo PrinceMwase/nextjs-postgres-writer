@@ -8,7 +8,7 @@ export type userDefinitions = {
   }[] | null;
 }
 
-type Writer = {
+export type Writer = {
   username: string;
   about: string | null;
   photo: {
