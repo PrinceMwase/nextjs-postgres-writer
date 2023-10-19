@@ -70,12 +70,12 @@ export default function ViewPoem({
     >
       <div className="w-full my-5">
         <article
-          className={`h-full lg:w-fit w-full m-auto overflow-auto shadow-md block`}
+          className={`h-full lg:w-fit w-full m-auto overflow-auto shadow-md block space-y-2`}
         >
-          <header className="flex items-center justify-between leading-tight p-2 md:p-4">
-            <h1 className="text-lg text-left">
+          <header className="flex items-center justify-between leading-tight px-2 md:p-4">
+            <h1 className="text-lg text-left basis-3/4">
               <Link
-                className="no-underline hover:underline font-bold tracking-wider py-4 block"
+                className="no-underline hover:underline font-bold tracking-wider block"
                 style={{ color }}
                 href={`/poem/${myPayload.id}`}
               >
@@ -112,7 +112,7 @@ export default function ViewPoem({
           </div>
 
           {/* comment input box */}
-          <div className={`flex py-2 ${commentBox ? "" : "hidden"}`}>
+          <div className={`flex ${commentBox ? "" : "hidden"}`}>
             <input
               type="text"
               placeholder="Comment"
