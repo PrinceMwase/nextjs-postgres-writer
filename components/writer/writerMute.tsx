@@ -8,12 +8,8 @@ export default function WriterMute({
   poemId: number;
   isMute: boolean;
 }) {
-  const [mute, setMute] = useState<boolean>();
+  const [mute, setMute] = useState<boolean>(isMute);
   const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    setMute(isMute);
-  }, []);
 
   const request = function toggleWriterLike() {
     setLoading(true)

@@ -8,12 +8,10 @@ export default function WriterLike({
   poemId: number;
   isLiked: boolean;
 }) {
-  const [like, setLike] = useState<boolean>();
+  const [like, setLike] = useState<boolean>(isLiked);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    setLike(isLiked);
-  }, []);
+  
 
   const request = function toggleWriterLike() {
     setLoading(true)

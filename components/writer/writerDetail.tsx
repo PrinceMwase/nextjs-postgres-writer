@@ -9,9 +9,10 @@ interface Props extends userDefinitions {
   pfp: string | undefined;
   about: string | null;
   username: string;
+  isProfile: boolean
 }
 
-export default function Details({username, userTags, about, firstname, lastname, pfp}:Props) {
+export default function Details({username, userTags, about, firstname, lastname, pfp, isProfile}:Props) {
  
 
   
@@ -103,7 +104,7 @@ export default function Details({username, userTags, about, firstname, lastname,
       </div>
 
       {/* user icons */}
-      <div className="flex space-x-4 p-4">
+     { !isProfile && <div className="flex space-x-4 py-4 px-2">
         <span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +137,7 @@ export default function Details({username, userTags, about, firstname, lastname,
             />
           </svg>
         </span>
-      </div>
+      </div>}
     </>
   );
 }

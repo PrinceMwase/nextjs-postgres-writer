@@ -19,7 +19,7 @@ export default function CreatePoem() {
   const [preview, setPreview] = useState<boolean>(false);
   const [confirm, setConfirmation] = useState<boolean>(false);
   const [genre, setGenre] = useState<number | null>(null);
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   if (status === "loading") {
     return <p>Loading...</p>;

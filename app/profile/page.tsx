@@ -1,68 +1,28 @@
 "use client";
-import Image from "next/image";
-
-import Details from "@/components/writer/writerDetail";
-import Featured from "@/components/writer/featured";
-import Categories from "@/components/writer/categories";
-import profile, { ProfilePoemType } from "types/profile";
 import { useState, useEffect } from "react";
+import WriterProfile from "@/components/writer/Profile";
+import Infinite from "@/components/poem/infinite";
 
 export default function Profile() {
-  const [profile, setProfile] = useState<profile>();
-  const [poems, setPoems] = useState<ProfilePoemType[] | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDrawer = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const request = async function retrieveProfile() {
-    await fetch("/api/profile", {
-      method: "GET",
-    }).then(async (response) => {
-      if (response.ok) {
-        const data = await response.json();
-
-        console.log(data);
-
-        const user: profile = data.user;
-
-        setPoems(user.writer[0].Poem);
-        setProfile(user);
-      }
-    });
-  };
+  const [username, setUsername] = useState<{
+    username: string;
+    id: number;
+  }>();
 
   useEffect(() => {
-    request();
+    fetch("api/writer/profile").then(async (response) => {
+      const writer: { username: string; id: number } = await response.json();
+      setUsername(writer);
+    });
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row px-4 py-10 h-screen">
-      
-
-      <div className="sm:w-full  mb-4 lg:mb-0 lg:basis-1/3">
-        {profile !== undefined && (
-          <Details
-            firstname={profile.firstname}
-            lastname={profile.lastname}
-            userTags={profile.userTags}
-            pfp={profile.writer[0].photo?.link}
-            about={profile.writer[0].about}
-            username={profile.writer[0].username}
-          />
-        )}
-      </div>
-
-      <div className="sm:w-full  mb-4 lg:mb-0">
-        {poems && (
-          <>
-            <Featured poems={poems} />
-
-            <Categories poems={poems} />
-          </>
-        )}
-      </div>
+    <div className="h-max">
+      {username && (
+        <Infinite writerId={username.id}>
+          <WriterProfile username={username.username} />
+        </Infinite>
+      )}
     </div>
   );
 }

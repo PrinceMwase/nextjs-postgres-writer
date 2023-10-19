@@ -1,7 +1,9 @@
 "use client";
+import Create from "@/components/poem/create";
 import Infinite from "@/components/poem/infinite";
 import { useSession, getSession, SessionProvider } from "next-auth/react";
 import { useEffect } from "react";
+
 
 export default function Home() {
   useEffect(() => {
@@ -23,7 +25,9 @@ export default function Home() {
   return (
     <>
       <SessionProvider>
-        <Infinite />
+        <Infinite>
+          <Create/>
+        </Infinite>
       </SessionProvider>
     </>
   );

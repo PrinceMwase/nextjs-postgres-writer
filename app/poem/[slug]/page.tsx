@@ -29,15 +29,14 @@ export default function Page({ params }: { params: { slug: string } }) {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
-          
+                    
           return setPoem(data);
         })
         .catch((error) => {
           console.error(error);
         });
     }
-  },  []);
+  }, []);
 
   if (poem === undefined) {
     return;

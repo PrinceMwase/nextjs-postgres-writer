@@ -5,7 +5,7 @@ import { payload, payload as payloadType } from "../../types/poem";
 import React, { useContext, useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Create from "./create";
+
 
 export const retrieveLikes = async function retrieveLikesRequest() {
   return fetch("/api/poem/likes", {
@@ -16,14 +16,13 @@ export const retrieveLikes = async function retrieveLikesRequest() {
   }).then(async (response) => {
     if (response.status == 200) {
       const allMyLikes: { myResult: number[] } = await response.json();
-      console.log(allMyLikes);
 
       return allMyLikes.myResult;
     }
   });
 }
 
-export default function Infinite({ writerId }: { writerId?: number }) {
+export default function Infinite({ writerId, children }: { writerId?: number; children?: React.ReactNode; }) {
 
   const [allPoems, setAllPoems] = useState<payload[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -33,7 +32,7 @@ export default function Infinite({ writerId }: { writerId?: number }) {
 
   const fetchLikes = async function likesRequest() {
     const result = await retrieveLikes();
-    setLikes(result ? result : null);
+    setLikes( result ?? null);
     await fetchMorePosts();
   };
 
@@ -52,8 +51,6 @@ export default function Infinite({ writerId }: { writerId?: number }) {
       }).then(async (response) => {
         if (response.status == 200) {
           const newPoems: payloadType[] = await response.json();
-          console.log(newPoems);
-
           if (newPoems.length === 0) {
             setHasMore(false);
           } else {
@@ -106,8 +103,8 @@ export default function Infinite({ writerId }: { writerId?: number }) {
           <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
         }
       >
-        <div className="h-max">
-          <Create />
+        <div className="">
+          {children}
           {likes &&
             allPoems?.map((value: payloadType, index) => {
               return (

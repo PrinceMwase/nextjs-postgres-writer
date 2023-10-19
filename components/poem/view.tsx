@@ -16,16 +16,17 @@ export default function ViewPoem({
   liked?: boolean;
 }) {
   const myPayload: payload = payload;
-  if ("error" in myPayload) {
-    return <></>;
-  }
-  const color = myPayload.background == "light" ? "#000000" : "#ffffff";
   const [loading, setLoading] = useState(false);
   const [commentBox, setCommentBox] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
   const [commentCount, setCommentCount] = useState<number>(
     myPayload._count?.comments
-  );
+    );
+    const color = myPayload.background == "light" ? "#000000" : "#ffffff";
+  if ("error" in myPayload) {
+    return <></>;
+  }
+
 
   async function sendComment() {
     if (checkForComment()) {
