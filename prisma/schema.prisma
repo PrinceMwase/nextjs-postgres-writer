@@ -123,7 +123,7 @@ model userTags {
 
 model Genre {
   id      Int    @id @default(autoincrement())
-  genre   String
+  genre   String @unique
   photoId Int    @unique
   photo   Photo  @relation(fields: [photoId], references: [id], onDelete: Cascade)
   Poem    Poem[]
