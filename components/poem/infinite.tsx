@@ -6,7 +6,6 @@ import React, { useContext, useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-
 export const retrieveLikes = async function retrieveLikesRequest() {
   return fetch("/api/poem/likes", {
     method: "GET",
@@ -20,32 +19,34 @@ export const retrieveLikes = async function retrieveLikesRequest() {
       return allMyLikes.myResult;
     }
   });
-}
+};
 
-export default function Infinite({ writerId, children }: { writerId?: number; children?: React.ReactNode; }) {
-
+export default function Infinite({
+  writerId,
+  children,
+}: {
+  writerId?: number;
+  children?: React.ReactNode;
+}) {
   const [allPoems, setAllPoems] = useState<payload[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [likes, setLikes] = useState<number[] | null>(null);
 
-  const [skip, setSkip] = useState(0);
-
   const fetchLikes = async function likesRequest() {
     const result = await retrieveLikes();
-    setLikes( result ?? null);
-    await fetchMorePosts();
+    setLikes(result ?? null);
   };
 
   const fetchMorePosts = async function postRequest() {
     try {
-      fetch("/api/poem/infinite", {
+      await fetch("/api/poem/infinite", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           writerId,
-          skip: allPoems?.length === 0 ? 0 : skip,
+          skip: allPoems.length,
           take: 2, // Adjust the number of posts to load at once
         }),
       }).then(async (response) => {
@@ -57,10 +58,10 @@ export default function Infinite({ writerId, children }: { writerId?: number; ch
             if (allPoems === null || allPoems === undefined) {
               setAllPoems([...newPoems]);
             } else {
-              setAllPoems([...allPoems, ...newPoems]);
+              setAllPoems((oldPoems) => {
+                return [...oldPoems, ...newPoems];
+              });
             }
-
-            setSkip((prevSkip) => prevSkip + newPoems.length);
           }
         }
       });
@@ -71,6 +72,10 @@ export default function Infinite({ writerId, children }: { writerId?: number; ch
 
   useEffect(() => {
     fetchLikes();
+  return ()=>{
+    setAllPoems([]);
+    setHasMore(true);
+  }
   }, []);
 
   return (
@@ -79,20 +84,18 @@ export default function Infinite({ writerId, children }: { writerId?: number; ch
         dataLength={allPoems.length} //This is important field to render the next data
         next={fetchMorePosts}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
+        loader={<h4>Loading...</h4>
+        }
         endMessage={
           <p style={{ textAlign: "center" }}>
             <b>Yay! You have seen it all</b>
           </p>
         }
         // below props only if you need pull down functionality
-        refreshFunction={() => {
+        refreshFunction={async () => {
           setAllPoems([]);
           setHasMore(true);
-          setSkip(() => {
-            return 0;
-          });
-          fetchMorePosts();
+          await fetchMorePosts();
         }}
         pullDownToRefresh={true}
         pullDownToRefreshThreshold={50}
@@ -120,4 +123,3 @@ export default function Infinite({ writerId, children }: { writerId?: number; ch
     </>
   );
 }
-
