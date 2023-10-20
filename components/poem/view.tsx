@@ -70,12 +70,12 @@ export default function ViewPoem({
     >
       <div className="w-full my-5">
         <article
-          className={`h-full lg:w-fit w-full m-auto overflow-auto shadow-md block space-y-2`}
+          className="h-full lg:w-fit w-full m-auto overflow-auto shadow-md block space-y-2 select-none"
         >
-          <header className="flex items-center justify-between leading-tight px-2 md:p-4">
+          <header className="flex items-baseline justify-between leading-tight px-2 md:p-4">
             <h1 className="text-lg text-left basis-3/4">
               <Link
-                className="no-underline hover:underline font-bold tracking-wider block"
+                className="no-underline hover:underline capitalize font-bold tracking-wider block"
                 style={{ color }}
                 href={`/poem/${myPayload.id}`}
               >
