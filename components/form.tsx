@@ -28,7 +28,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
               toast.error(error);
             } else {
               router.refresh();
-              router.push("/protected");
+              router.push("/");
             }
           });
         } else {
@@ -48,7 +48,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
               toast.success("Account created! Redirecting to login...");
               setTimeout(() => {
                 router.push("/login");
-              }, 2000);
+              }, 1000);
             } else {
               const { error } = await res.json();
               toast.error(error);
