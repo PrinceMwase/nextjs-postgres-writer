@@ -1,6 +1,10 @@
 import InfoIcon from "@/components/svg/InfoIcon";
 import Link from "next/link";
 import SignOutDrawer from "./SignOutDrawer";
+import LikeIcon from "../svg/LikeIcon";
+import MuteIcon from "../svg/MuteIcon";
+import NotificationIcon from "../svg/NotificationIcon";
+import SettingsIcon from "../svg/SettingsIcon";
 export default function Drawer() {
   return (
     <div
@@ -16,39 +20,44 @@ export default function Drawer() {
 
       <div className="py-10">
         <ul>
-          <li className="border-b cursor-pointer hover:bg-slate-100 transition-all">
+          <li className="border-b cursor-pointer hover:bg-slate-100">
             <div className="p-4 flex space-x-2 items-center">
-              <InfoIcon />{" "}
+              <LikeIcon/>
               <span className="font-semibold text-lg">Following</span>
             </div>
           </li>
-          <li className="border-b cursor-pointer hover:bg-slate-100 transition-all">
+          <li className="border-b cursor-pointer hover:bg-slate-100">
             <div className="p-4 flex space-x-2 items-center">
-              <InfoIcon /> <span className="font-semibold text-lg">Muted</span>
+              <MuteIcon/>
+              <span className="font-semibold text-lg">Muted</span>
             </div>
           </li>
-          <li className="border-b cursor-pointer hover:bg-slate-100 transition-all">
+          <li className="border-b cursor-pointer hover:bg-slate-100">
             <div className="p-4 flex space-x-2 items-center">
-              <InfoIcon />{" "}
+              <NotificationIcon/>
               <span className="font-semibold text-lg">Notifications</span>
             </div>
           </li>
-          <li className="border-b cursor-pointer hover:bg-slate-100 transition-all">
-            <div className="p-4 flex space-x-2 items-center">
-              <InfoIcon />{" "}
-              <span className="font-semibold text-lg">Settings & Privacy</span>
-            </div>
-          </li>
-          <li className="border-b cursor-pointer hover:bg-slate-100 transition-all">
-            <Link href="/about">
+          <li className="border-b cursor-pointer hover:bg-slate-100">
+            <Link href="/settings">
               <div className="p-4 flex space-x-2 items-center">
-                <InfoIcon />{" "}
-                <span className="font-semibold text-lg">About</span>
+                <SettingsIcon/>
+                <span className="font-semibold text-lg">
+                  Settings & Privacy
+                </span>
               </div>
             </Link>
           </li>
-          <li className="border-b cursor-pointer hover:bg-slate-100 transition-all">
-          <SignOutDrawer/>
+          <li className="border-b cursor-pointer hover:bg-slate-100">
+            <Link href="/about">
+              <div className="p-4 flex space-x-2 items-center">
+                <InfoIcon />{" "}
+                <span className="font-semibold text-lg">About Page</span>
+              </div>
+            </Link>
+          </li>
+          <li className="border-b cursor-pointer hover:bg-slate-100">
+            <SignOutDrawer />
           </li>
         </ul>
       </div>
