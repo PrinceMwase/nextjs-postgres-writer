@@ -13,6 +13,7 @@ export default function FullNameForm({ profile }: { profile: profile }) {
 
   const updateNames = async function updateFirstNameAndLastName() {
     setLoading(true);
+    setShowFullNameInput(false)
 
     const currentFullName = fullName.trim();
     if (currentFullName.length === 0) {
@@ -54,9 +55,7 @@ export default function FullNameForm({ profile }: { profile: profile }) {
         <div className="text-lg font-semibold uppercase flex space-x-2 items-center">
           <span>Full Name</span> <EditIcon />
         </div>
-        <div className="text-gray-600">{`${profile.firstname ?? ""} ${
-          profile.lastname ?? ""
-        }`}</div>
+        <div className="text-gray-600">{fullName}</div>
       </label>
       {showFullNameInput && (
         <div className="flex justify-between space-x-2">
@@ -86,7 +85,7 @@ export default function FullNameForm({ profile }: { profile: profile }) {
             Cancel
           </button>
           <button
-            className="ease-in-out duration-300 transition-all mt-1  px-6 font-semibold border-none rounded-none bg-white text-black active:bg-gray-400  "
+            className="ease-in-out duration-300 transition-all mt-1  px-6 font-semibold border-none rounded-none bg-white text-black disabled:text-gray-400 active:bg-gray-400  "
             type="button"
             disabled={loading}
             onClick={updateNames}
