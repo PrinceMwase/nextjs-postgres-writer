@@ -2,7 +2,7 @@
 // components/InfiniteScroll.js
 import { payload, payload as payloadType } from "../../types/poem";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -106,7 +106,7 @@ export default function Infinite({
           <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
         }
       >
-        <div className="">
+        <div className="select-none">
           {children}
           {likes &&
             allPoems?.map((value: payloadType, index) => {

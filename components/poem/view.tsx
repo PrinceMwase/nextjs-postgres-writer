@@ -7,6 +7,8 @@ import { payload, commentType } from "../../types/poem";
 import { useRouter } from "next/navigation";
 import Like from "./like";
 import Delete from "./delete";
+import ChatIcon from "../svg/ChatIcon";
+import MiniSendIcon from "../svg/MiniSendIcon";
 
 export default function ViewPoem({
   payload,
@@ -21,12 +23,11 @@ export default function ViewPoem({
   const [comment, setComment] = useState<string>("");
   const [commentCount, setCommentCount] = useState<number>(
     myPayload._count?.comments
-    );
-    const color = myPayload.background == "light" ? "#000000" : "#ffffff";
+  );
+  const color = myPayload.background == "light" ? "#000000" : "#ffffff";
   if ("error" in myPayload) {
     return <></>;
   }
-
 
   async function sendComment() {
     if (checkForComment()) {
@@ -69,9 +70,7 @@ export default function ViewPoem({
       } px-4 py-8 sm:px-16 w-full`}
     >
       <div className="w-full my-5">
-        <article
-          className="h-full lg:w-fit w-full m-auto overflow-auto shadow-md block space-y-2 select-none"
-        >
+        <article className="h-full lg:w-fit w-full m-auto overflow-auto shadow-md block space-y-2">
           <header className="flex items-baseline justify-between leading-tight px-2 md:p-4">
             <h1 className="text-lg text-left basis-3/4">
               <Link
@@ -112,7 +111,7 @@ export default function ViewPoem({
           </div>
 
           {/* comment input box */}
-          <div className={`flex ${commentBox ? "" : "hidden"}`}>
+          <div className={`flex ${commentBox ? "" : "hidden"} items-center`}>
             <input
               type="text"
               placeholder="Comment"
@@ -121,7 +120,9 @@ export default function ViewPoem({
               onChange={(e) => setComment(e.target.value)}
               id="comment"
               className={`${
-                myPayload.background == "dark" ? "bg-slate-900 text-white" : "bg-slate-50 text-black"
+                myPayload.background == "dark"
+                  ? "bg-slate-900 text-white"
+                  : "bg-slate-50 text-black"
               } my-1 block w-full appearance-none rounded-none border-b-2 h-full border-gray-300 px-4 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm`}
             />
 
@@ -134,21 +135,7 @@ export default function ViewPoem({
               }`}
               onClick={sendComment}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-10 align-middle mx-2 py-1"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ color }}
-                  d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                />
-              </svg>
+              <MiniSendIcon color={color}/>
             </a>
           </div>
 
@@ -157,7 +144,7 @@ export default function ViewPoem({
             <Delete id={payload.id} color={color} />
 
             {/* like and comment */}
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 items-center">
               {/* like */}
               <Like
                 id={payload.id}
@@ -177,20 +164,7 @@ export default function ViewPoem({
               >
                 {/* Comments Count */}
                 <span className="absolute -my-2 ">{commentCount}</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke={color}
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
-                  />
-                </svg>
+                <ChatIcon color={color} />
               </a>
             </div>
           </footer>

@@ -1,7 +1,17 @@
-import { useState, useEffect, DetailedHTMLProps, SelectHTMLAttributes } from "react";
+import {
+  useState,
+  useEffect,
+  DetailedHTMLProps,
+  SelectHTMLAttributes,
+} from "react";
 import { genreType } from "types/genre";
 
-export default function genreDropDown({...args}: DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>) {
+export default function genreDropDown({
+  ...args
+}: DetailedHTMLProps<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  HTMLSelectElement
+>) {
   const [genres, setGenres] = useState<genreType[]>([]);
 
   const retrieve = async function retrieveGenres() {
@@ -14,14 +24,20 @@ export default function genreDropDown({...args}: DetailedHTMLProps<SelectHTMLAtt
     });
   };
   useEffect(() => {
-    retrieve()
+    retrieve();
   }, []);
 
   return (
     <select {...args}>
-        <option value="null" selected disabled>Category</option>
+      <option value="null" selected disabled>
+        Genre
+      </option>
       {genres.map((value, index) => {
-        return <option key={index} className="capitalize" value={value.id}>{value.genre}</option>;
+        return (
+          <option key={index} className="capitalize" value={value.id}>
+            {value.genre}
+          </option>
+        );
       })}
     </select>
   );

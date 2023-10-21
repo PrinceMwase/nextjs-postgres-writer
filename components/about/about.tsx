@@ -30,7 +30,7 @@ export default function About() {
               </div>
             </div>
             <div className="px-2 text-white font-medium">
-              <div>A poet's haven</div>
+              <div>A poet&apos;s haven</div>
             </div>
           </div>
         </div>

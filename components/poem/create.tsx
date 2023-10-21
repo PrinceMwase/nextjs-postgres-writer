@@ -275,6 +275,7 @@ export default function CreatePoem() {
                     onChange={(e) => {
                       setDescription(e.target.value);
                     }}
+                    disabled={loading}
                     className="w-full inline border-b-2 h-10 border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                     placeholder="Add a short description here"
                   />
