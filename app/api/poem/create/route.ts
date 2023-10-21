@@ -43,13 +43,13 @@ export async function POST(req: Request) {
       return NextResponse.json(results, { status: 200 });
     } else {
       return NextResponse.json(
-        { success: "Failed to Create" },
+        { error: "Failed to Create" },
         { status: 400 }
       );
     }
   } else {
     return NextResponse.json(
-      { success: "Failed to Create you are not a writer" },
+      { error: "Failed to Create you are not a writer" },
       { status: 400 }
     );
   }
