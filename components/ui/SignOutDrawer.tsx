@@ -1,13 +1,12 @@
 "use client";
 import { signOut } from "next-auth/react";
-import InfoIcon from "../svg/InfoIcon";
+import SignOutIcon from "../svg/SignOutIcon";
 
-export default function SignOutDrawer() {
-  
+export default function SignOutButton() {
   return (
     <button onClick={() => signOut()}>
       <div className="p-4 flex space-x-2 items-center">
-        <InfoIcon /> <span className="font-semibold text-lg">Sign Out</span>
+        <SignOutIcon /> <span className="font-semibold text-lg">Sign Out</span>
       </div>
     </button>
   );
