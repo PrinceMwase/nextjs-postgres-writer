@@ -121,9 +121,9 @@ export default function UserTagsForm({
         }}
       >
         <div className="text-lg font-semibold uppercase flex space-x-2 items-center">
-          <span>My Tags</span> <EditIcon />
+          <span>Tags</span> <EditIcon />
         </div>
-        <div>Add Tags to Help in Recommendations and reach</div>
+        <div className="py-1">Add Tags to Help in Recommendations and reach</div>
         <div
           className={`ease-in-out duration-200 transition-opacity flex space-x-4 text-gray-600 ${
             showTagForm ? "opacity-0" : "opacity-100"

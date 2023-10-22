@@ -24,6 +24,9 @@ setMyTags: Dispatch<SetStateAction<{
   const [loading, setLoading] = useState(false);
 
   const Delete = async function DeleteUserTag() {
+    if(loading){
+        return
+    }
     setLoading(true);
     
     fetch("/api/update/user/tag", {
@@ -32,9 +35,7 @@ setMyTags: Dispatch<SetStateAction<{
     })
       .then(async (response) => {
         if (response.status === 200) {
-          const DeletedTag: { id: number; tag: string } = await response.json();
-
-          toast.success("Removed Tag");
+                  toast.success("Removed Tag");
           setMyTags( (allTags)=>{
             return allTags.filter((element)=>{
                 return element.id != id
@@ -69,10 +70,10 @@ setMyTags: Dispatch<SetStateAction<{
     <li className="border-b">
       <div
         className={`py-2 flex space-x-2 items-center ${
-          loading ? "disabled:text-gray-400" : ""
+          loading ? "text-gray-400" : ""
         }`}
       >
-        <span onClick={Delete}>
+        <span onClick={Delete} className="cursor-pointer">
           <SmallXIcon />
         </span>
         <span className="capitalize">{tag}</span>
