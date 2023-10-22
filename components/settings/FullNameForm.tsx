@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import EditIcon from "../svg/EditIcon";
 import profile from "types/profile";
 import { toast } from "react-hot-toast";
+import ActionButton from "./ActionButton";
 
 export default function FullNameForm({ profile }: { profile: profile }) {
   const [fullName, setFullName] = useState<string>(
@@ -13,12 +14,18 @@ export default function FullNameForm({ profile }: { profile: profile }) {
 
   const updateNames = async function updateFirstNameAndLastName() {
     setLoading(true);
-    setShowFullNameInput(false)
+    setShowFullNameInput(false);
 
     const currentFullName = fullName.trim();
     if (currentFullName.length === 0) {
       setLoading(false);
       setFullNameError(true);
+      return;
+    }
+    if (fullName === `${profile.firstname ?? ""} ${profile.lastname ?? ""}`) {
+      setLoading(false);
+      setFullNameError(true);
+      toast.error("Full Name Has Not Been Updated");
       return;
     }
     fetch("/api/update/user/fullname", {
@@ -42,7 +49,7 @@ export default function FullNameForm({ profile }: { profile: profile }) {
   };
 
   return (
-    <div className="mx-auto md:w-3/4 lg:1/3">
+    <div className="mx-auto">
       <label
         htmlFor="fullName"
         className="block text-xs"
@@ -55,7 +62,13 @@ export default function FullNameForm({ profile }: { profile: profile }) {
         <div className="text-lg font-semibold uppercase flex space-x-2 items-center">
           <span>Full Name</span> <EditIcon />
         </div>
-        <div className="text-gray-600">{fullName}</div>
+        <div
+          className={`ease-in-out duration-200 transition-opacity text-gray-600 ${
+            showFullNameInput ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          {fullName}
+        </div>
       </label>
       {showFullNameInput && (
         <div className="flex justify-between space-x-2">
@@ -71,27 +84,20 @@ export default function FullNameForm({ profile }: { profile: profile }) {
               setFullName(e.currentTarget.value);
             }}
             autoComplete="fullName"
-            className={`mt-1 h-10 grow appearance-none border-b ${
+            className={`mt-1 grow appearance-none border-b ${
               fullNameError ? "border-red-500" : "border-gray-300"
-            }   py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm`}
+            }   placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm`}
           />
-          <button
-            className="ease-in-out duration-300 transition-all mt-1 align-text-bottom  px-6 font-semibold border-none rounded-none bg-white text-black active:bg-gray-400  "
-            type="button"
+          <ActionButton
             onClick={() => {
               setShowFullNameInput(false);
             }}
           >
             Cancel
-          </button>
-          <button
-            className="ease-in-out duration-300 transition-all mt-1  px-6 font-semibold border-none rounded-none bg-white text-black disabled:text-gray-400 active:bg-gray-400  "
-            type="button"
-            disabled={loading}
-            onClick={updateNames}
-          >
-            UPDATE
-          </button>
+          </ActionButton>
+          <ActionButton disabled={loading} onClick={updateNames}>
+            Update
+          </ActionButton>
         </div>
       )}
     </div>
