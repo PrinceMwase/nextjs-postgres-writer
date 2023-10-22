@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import EditIcon from "../svg/EditIcon";
-import HashTagIcon from "../svg/HashTagIcon";
 import SmallHashTagIcon from "../svg/SmallHashTagIcon";
 import ActionButton from "./ActionButton";
 import TagItem from "./TagItem";
@@ -17,9 +16,11 @@ export default function UserTagsForm({
         };
       }[];
 }) {
-  const userTagsFiltered = userTags.map((value) => {
-    return value.tag;
-  });
+  const [userTagsFiltered, setUserTagsFiltered] = useState(
+    userTags.map((value) => {
+      return value.tag;
+    })
+  );
 
   const [tag, setTag] = useState("");
   const [tagError, setTagError] = useState(false);
@@ -28,10 +29,8 @@ export default function UserTagsForm({
   const [showTagForm, setShowTagForm] = useState<boolean>(false);
 
   const set = new Set(userTagsFiltered); // Convert array to Set
-  const [myTags, setMyTags] = useState(set);
-  const [TagList, setTagList] = useState(
-    Array.from(myTags).map((Tag, index) => <TagItem key={index} {...Tag} />)
-  );
+  const [myTags, setMyTags] = useState(Array.from(set));
+  const [TagList, setTagList] = useState<JSX.Element[]>([]);
 
   const addTag = async function addNewTag() {
     if (loading) {
@@ -48,7 +47,7 @@ export default function UserTagsForm({
       setShowTagForm(true);
       return;
     }
-    if (myTags.values.length > 2) {
+    if (myTags.length >= 3) {
       setLoading(false);
       setTagError(true);
       setShowTagForm(true);
@@ -64,17 +63,30 @@ export default function UserTagsForm({
           const { newTag }: { newTag: { id: number; tag: string } } =
             await response.json();
 
+         
           setMyTags((oldTags) => {
-            oldTags.add(newTag);
+            oldTags.push(newTag);
+            setUserTagsFiltered(Array.from(oldTags));
+            setTagList(
+              Array.from(oldTags).map((Tag, index) => (
+                <TagItem
+                setMyTags={setMyTags}
+                  key={index}
+                  {...Tag}
+                  setTagArray={setUserTagsFiltered}
+                  setTagListFunction={setTagList}
+                />
+              ))
+            );
             return oldTags;
           });
 
           setLoading(false);
           toast.success("Added New Tag");
-          return
+          return;
         }
-        const {error} = await response.json()
-        toast.error(error)
+        const { error } = await response.json();
+        toast.error(error);
         setLoading(false);
       })
       .catch(async (error) => {
@@ -84,11 +96,19 @@ export default function UserTagsForm({
   };
 
   useEffect(() => {
-    console.log("updating list");
-
-    setTagList(Array.from(myTags).map((Tag, index) => <TagItem key={index} {...Tag} />));
-  }, [myTags, setMyTags]);
-
+    setUserTagsFiltered(userTags.map((value) => value.tag));
+    setTagList(
+      Array.from(myTags).map((Tag, index) => (
+        <TagItem
+        setMyTags={setMyTags}
+          key={index}
+          {...Tag}
+          setTagArray={setUserTagsFiltered}
+          setTagListFunction={setTagList}
+        />
+      ))
+    );
+  }, []);
   return (
     <div className="mx-auto">
       <label
@@ -103,9 +123,7 @@ export default function UserTagsForm({
         <div className="text-lg font-semibold uppercase flex space-x-2 items-center">
           <span>My Tags</span> <EditIcon />
         </div>
-        <div>
-            Add Tags to Help in Recommendations and reach
-        </div>
+        <div>Add Tags to Help in Recommendations and reach</div>
         <div
           className={`ease-in-out duration-200 transition-opacity flex space-x-4 text-gray-600 ${
             showTagForm ? "opacity-0" : "opacity-100"

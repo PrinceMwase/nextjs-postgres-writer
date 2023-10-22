@@ -12,6 +12,7 @@ const userQuery: Prisma.UserSelect<DefaultArgs> = {
     select: {
       tag: {
         select: {
+          id: true,
           tag: true,
         },
       },

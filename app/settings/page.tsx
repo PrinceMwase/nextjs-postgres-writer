@@ -47,7 +47,7 @@ export default function Settings() {
   const [clicked, setClicked] = useState(false);
   return (
     <div className="py-8  w-full">
-      <div className={`py-10 px-4 ${clicked ? "hidden" : ""}`}>
+      <div className={`px-4 ${clicked ? "hidden" : ""}`}>
         <SettingsList
           trigger={() => {
             setClicked(true);

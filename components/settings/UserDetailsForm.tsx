@@ -3,6 +3,7 @@ import profile from "types/profile";
 import EditIcon from "../svg/EditIcon";
 import AboutForm from "./AboutForm";
 import FullNameForm from "./FullNameForm";
+import UserTagsForm from "./UserTagsForm";
 
 export default function UserDetailsForm({ show }: { show: boolean }) {
   const [profile, setProfile] = useState<profile>();
@@ -25,23 +26,7 @@ export default function UserDetailsForm({ show }: { show: boolean }) {
       }
     });
   };
-  const updateNames = async function updateFirstNameAndLastName() {
-    const currentFullName = fullName.trim();
-    if (currentFullName.length === 0) {
-      setFullNameError(true);
-      return;
-    }
-    fetch("/api/update/user/fullname", {
-      method: "POST",
-      body: JSON.stringify({ currentFullName }),
-    }).then(async (response) => {
-      if (response.status === 200) {
-        const { newFullName }: { newFullName: string } = await response.json();
 
-        setFullName(newFullName);
-      }
-    });
-  };
 
   useEffect(() => {
     request();
@@ -51,12 +36,13 @@ export default function UserDetailsForm({ show }: { show: boolean }) {
     <>
       {profile && (
         <div
-          className={`py-10 px-4 ease-in-out duration-300 transition-opacity space-y-4 ${
+          className={` px-4 ease-in-out duration-300 transition-opacity space-y-4 ${
             show ? "opacity-100" : "opacity-0"
           }`}
         >
           <FullNameForm profile={profile} />
           <AboutForm oldAbout={profile.writer[0].about} />
+          <UserTagsForm userTags={profile.userTags ?? []} />
         </div>
       )}
     </>
