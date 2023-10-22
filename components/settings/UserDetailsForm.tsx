@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import profile from "types/profile";
 import EditIcon from "../svg/EditIcon";
+import AboutForm from "./AboutForm";
 import FullNameForm from "./FullNameForm";
 
 export default function UserDetailsForm({ show }: { show: boolean }) {
@@ -50,11 +51,12 @@ export default function UserDetailsForm({ show }: { show: boolean }) {
     <>
       {profile && (
         <div
-          className={`py-10 px-4 ease-in-out duration-300 transition-opacity ${
+          className={`py-10 px-4 ease-in-out duration-300 transition-opacity space-y-4 ${
             show ? "opacity-100" : "opacity-0"
           }`}
         >
           <FullNameForm profile={profile} />
+          <AboutForm oldAbout={profile.writer[0].about} />
         </div>
       )}
     </>

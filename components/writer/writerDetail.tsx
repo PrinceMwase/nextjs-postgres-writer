@@ -8,6 +8,7 @@ import IdCardIcon from "../svg/IdCardIcon";
 import InfoIcon from "../svg/InfoIcon";
 import HeartIcon from "../svg/HeartIcon";
 import NotificationIcon from "../svg/NotificationIcon";
+import HashTagIcon from "../svg/HashTagIcon";
 
 interface Props extends userDefinitions {
   pfp: string | undefined;
@@ -54,9 +55,11 @@ export default function Details({
         </div>
 
         <div className="flex space-x-2">
-          <InfoIcon />
+          <span>
+            <InfoIcon />
+          </span>
 
-          <span className="text-lg text-gray-600">{about}</span>
+          <div className="text-lg text-gray-600">{about}</div>
         </div>
 
         <div className="flex space-x-4">
