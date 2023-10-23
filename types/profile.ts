@@ -3,6 +3,7 @@ export type userDefinitions = {
   lastname: string | null;
   userTags: {
     tag: {
+      id: number
       tag: string
     };
   }[] | null;
