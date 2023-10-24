@@ -1,53 +1,125 @@
 import prisma from "../../../../lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
+import { auth } from "@/lib/auth";
 
-export async function POST(req: Request){
-    const reqValues = await req.json();
-  const session = await getServerSession();
+export async function authorize() {
+  const authStatus = await auth();
+
+  if (!authStatus) {
+    return null;
+  }
+  const email = authStatus.user?.email;
+
+  if (!email) {
+    return null;
+  }
+  return email;
+}
+
+export async function POST(req: Request) {
+  const reqValues = await req.json();
+
+  const email = await authorize();
+  if (!email) {
+    return NextResponse.json({ error: "not authorized" }, { status: 401 });
+  }
+
   const user = await prisma.user.findUnique({
     select: {
-        id:true
+      id: true,
     },
     where: {
-      email: session?.user?.email,
+      email,
     },
   });
 
-  const result = await prisma.writerMute.create({
+  if (!user) {
+    return NextResponse.json({ error: "not authorized" }, { status: 401 });
+  }
+
+  await prisma.writerMute.create({
     data: {
-      writerId: reqValues.poemId,
-      userId: user?.id,
+      writerId: reqValues.writerId,
+      userId: user.id,
     },
   });
-  return NextResponse.json({ result }, { status: 200 });
+  return NextResponse.json({ success: "Muted" }, { status: 200 });
 }
 
 export async function GET(req: Request) {
-    const session = await getServerSession();
-  
-    const user = await prisma.user.findUnique({
+  const email = await authorize();
+  if (!email) {
+    return NextResponse.json({ error: "not authorized" }, { status: 401 });
+  }
+  const { searchParams } = new URL(req.url);
+  let stringified = searchParams.get("slug") ?? "";
+
+  let writerId = parseInt(stringified);
+
+  const user = await prisma.user
+    .findUniqueOrThrow({
       select: {
-          id:true
+        id: true,
       },
       where: {
-        email: session?.user?.email,
+        email,
       },
+    })
+    .catch(() => {
+      return null;
     });
-      
-    let mutes = await prisma.writerMute.findMany({
+
+  if (user === null) {
+    return NextResponse.json({ error: "not following" }, { status: 403 });
+  }
+
+  let mute = await prisma.writerMute
+    .findUniqueOrThrow({
       select: {
         userId: true,
       },
       where: {
-        userId: user?.id,
+        userId_writerId: { writerId, userId: user.id },
       },
-    });
-     const muted = Array.from(mutes, (like)=>{
-      return like.userId
     })
-    
-    
-    
-    return NextResponse.json({ muted }, { status: 200 });
+    .catch(() => {
+      return null;
+    });
+
+  if (mute === null) {
+    return NextResponse.json({ error: "not on mute" }, { status: 403 });
   }
+  return NextResponse.json({ mute }, { status: 200 });
+}
+
+export async function DELETE(req: Request){
+  const reqValues = await req.json();
+
+  const email = await authorize();
+  if (!email) {
+    return NextResponse.json({ error: "not authorized" }, { status: 401 });
+  }
+
+  const user = await prisma.user.findUniqueOrThrow({
+    select: {
+      id: true,
+    },
+    where: {
+      email,
+    },
+  }).catch(()=>{
+    return null
+  });
+  if (user === null) {
+    return NextResponse.json({ error: "not authorized" }, { status: 401 });
+  }
+
+  const result = await prisma.writerMute.delete({
+    where: {
+      userId_writerId: { userId: user.id, writerId: reqValues.writerId },
+    },
+  });
+
+  return NextResponse.json({ success: "Muted Writer" }, { status: 200 });
+}
