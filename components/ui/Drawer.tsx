@@ -31,10 +31,12 @@ export default function Drawer() {
             </Link>
           </li>
           <li className="border-b cursor-pointer hover:bg-slate-100">
-            <div className="p-4 flex space-x-2 items-center">
-              <MuteIcon />
-              <span className="font-semibold text-lg">Muted</span>
-            </div>
+            <Link href="/writer/muted">
+              <div className="p-4 flex space-x-2 items-center">
+                <MuteIcon />
+                <span className="font-semibold text-lg">Muted</span>
+              </div>
+            </Link>
           </li>
           <li className="border-b cursor-pointer hover:bg-slate-100">
             <div className="p-4 flex space-x-2 items-center">

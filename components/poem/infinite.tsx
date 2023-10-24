@@ -25,10 +25,12 @@ export default function Infinite({
   writerId,
   children,
   writersId,
+  notWritersId
 }: {
   writerId?: number;
   children?: React.ReactNode;
   writersId?: boolean;
+  notWritersId?: boolean;
 }) {
   const [allPoems, setAllPoems] = useState<payload[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -49,6 +51,7 @@ export default function Infinite({
         body: JSON.stringify({
           writerId,
           writersId,
+          notWritersId,
           skip: allPoems.length,
           take: 2, // Adjust the number of posts to load at once
         }),

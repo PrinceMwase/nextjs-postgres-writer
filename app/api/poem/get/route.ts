@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import { LineProperty, payload, commentType } from "../../../../types/poem";
+import { authorize } from "../infinite/route";
 
 export async function GET(req: Request) {
 
@@ -8,7 +9,26 @@ export async function GET(req: Request) {
   let stringified = searchParams.get('slug') ?? ''
 
   let id  = parseInt(stringified)
+
+  const email = await authorize();
+  if (!email) {
+    return NextResponse.json("Not authorized", {status: 401})
+  }
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        email,
+      },
+      select: {
+        WriterMute:true
+      },
+    });
+
+    const MutedWritersId = user.WriterMute.map((value)=>{
+      return value.writerId
+    })
   
+  
+
 
   const poem = await prisma.poem.findUnique({
     where: {
@@ -33,6 +53,11 @@ export async function GET(req: Request) {
         },
       },
       comments: {
+        where:{
+          writerId:{
+            notIn: MutedWritersId
+          }
+        },
         select: {
           id: true,
           content: true,
