@@ -63,14 +63,13 @@ export default function UserTagsForm({
           const { newTag }: { newTag: { id: number; tag: string } } =
             await response.json();
 
-         
           setMyTags((oldTags) => {
             oldTags.push(newTag);
             setUserTagsFiltered(Array.from(oldTags));
             setTagList(
               Array.from(oldTags).map((Tag, index) => (
                 <TagItem
-                setMyTags={setMyTags}
+                  setMyTags={setMyTags}
                   key={index}
                   {...Tag}
                   setTagArray={setUserTagsFiltered}
@@ -100,7 +99,7 @@ export default function UserTagsForm({
     setTagList(
       Array.from(myTags).map((Tag, index) => (
         <TagItem
-        setMyTags={setMyTags}
+          setMyTags={setMyTags}
           key={index}
           {...Tag}
           setTagArray={setUserTagsFiltered}
@@ -123,7 +122,9 @@ export default function UserTagsForm({
         <div className="text-lg font-semibold uppercase flex space-x-2 items-center">
           <span>Tags</span> <EditIcon />
         </div>
-        <div className="py-1">Add Tags to Help in Recommendations and reach</div>
+        <div className="py-1">
+          Add Tags to Help in Recommendations and reach
+        </div>
         <div
           className={`ease-in-out duration-200 transition-all flex space-x-4 text-gray-600 ${
             showTagForm ? "opacity-0" : "opacity-100 py-1"
@@ -141,7 +142,7 @@ export default function UserTagsForm({
       </label>
       {showTagForm && (
         <>
-          <div className="flex justify-between space-x-2">
+          <div className="flex justify-between space-x-8">
             <input
               id="tag"
               name="tag"
@@ -166,7 +167,7 @@ export default function UserTagsForm({
               Cancel
             </ActionButton>
             <ActionButton disabled={loading} onClick={addTag}>
-              Add Tag
+              Add
             </ActionButton>
           </div>
           <div>

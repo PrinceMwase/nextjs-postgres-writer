@@ -9,7 +9,7 @@ export default function ActionButton({
 >) {
   return (
     <button
-      className="ease-in-out h-min my-auto duration-300 transition-all  px-6 font-semibold border-none rounded-none bg-white text-black active:bg-gray-400 disabled:text-gray-400"
+      className="ease-in-out my-auto w-12 duration-300 transition-all font-semibold border-none rounded-none bg-white text-black active:bg-gray-400 disabled:text-gray-400"
       type="button"
       {...args}
     >

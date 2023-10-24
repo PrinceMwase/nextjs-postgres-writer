@@ -71,7 +71,7 @@ export default function FullNameForm({ profile }: { profile: profile }) {
         </div>
       </label>
       {showFullNameInput && (
-        <div className="flex justify-between space-x-2">
+        <div className="flex justify-between space-x-8">
           <input
             id="fullName"
             name="fullName"

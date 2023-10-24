@@ -69,7 +69,7 @@ export default function AboutForm({ oldAbout }: { oldAbout: string | null }) {
         </div>
       </label>
       {showAboutInput && (
-        <div className="flex justify-between space-x-2">
+        <div className="flex justify-between space-x-8">
           <textarea
             id="about"
             name="about"

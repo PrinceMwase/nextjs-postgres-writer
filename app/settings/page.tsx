@@ -2,26 +2,26 @@
 
 import UserDetailsForm from "@/components/settings/UserDetailsForm";
 import { MouseEventHandler, useState } from "react";
-import BackIcon from "@/components/svg/BackIcon"
+import BackIcon from "@/components/svg/BackIcon";
 
 const SettingsList = function allTheSettingsOptions({
-  trigger,
+  userDetailsTrigger,
 }: {
-  trigger: MouseEventHandler<HTMLLIElement> | undefined;
-}) {
+  userDetailsTrigger: MouseEventHandler<HTMLLIElement>;
+}) {  
   return (
     <ul className="">
       <li
         className="border-b cursor-pointer hover:bg-slate-100"
-        onClick={trigger}
+        onClick={userDetailsTrigger}
       >
         <div className="p-4 flex justify-between items-center">
           <div>
             <span className="font-semibold text-lg text-left">
-              User Details
+              Update User Information
             </span>
             <div className="text-sm">
-              Update Firstname, Lastname, Password, About
+              Name, Password, About, Tags
             </div>
           </div>
           <svg
@@ -45,22 +45,25 @@ const SettingsList = function allTheSettingsOptions({
 };
 
 export default function Settings() {
-  const [clicked, setClicked] = useState(false);
+  const [clickedUserDetailsList, setShowUserDetails] = useState(false);
   return (
     <div className="py-8  w-full">
-      <div className={`mb-4 w-max mx-4 cursor-pointer ${clicked ? "" : "hidden"}`} onClick={()=>{
-        setClicked(false)
-      }}>
-          <BackIcon/>
-        </div>
-      <div className={`px-4 ${clicked ? "hidden" : ""}`}>
+      <div
+        className={`mb-4 w-max mx-4 cursor-pointer ${clickedUserDetailsList ? "" : "hidden"}`}
+        onClick={() => {
+          setShowUserDetails(false);
+        }}
+      >
+        <BackIcon />
+      </div>
+      <div className={`px-4 ${clickedUserDetailsList ? "hidden" : ""}`}>
         <SettingsList
-          trigger={() => {
-            setClicked(true);
+          userDetailsTrigger={function showUserDetails(){
+            setShowUserDetails(true);
           }}
         />
       </div>
-      <UserDetailsForm show={clicked} />
+      <UserDetailsForm show={clickedUserDetailsList} />
     </div>
   );
 }

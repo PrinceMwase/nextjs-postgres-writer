@@ -97,7 +97,7 @@ export default function UserPasswordForm() {
               }   placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm`}
             />
           </div>
-          <div className="flex justify-between space-x-2">
+          <div className="flex justify-between space-x-8">
             <input
               type="password"
               value={newPassword}
