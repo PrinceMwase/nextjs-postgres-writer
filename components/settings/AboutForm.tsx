@@ -61,8 +61,8 @@ export default function AboutForm({ oldAbout }: { oldAbout: string | null }) {
         </div>
 
         <div
-          className={`ease-in-out duration-200 transition-opacity text-gray-600 ${
-            showAboutInput ? "opacity-0" : "opacity-100"
+          className={`ease-in-out duration-200 transition-all text-gray-600 ${
+            showAboutInput ? "opacity-0" : "opacity-100 py-1"
           }`}
         >
           {about}

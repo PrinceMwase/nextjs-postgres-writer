@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "lib/prisma";
 import { auth } from "lib/auth";
-import { hash } from "bcrypt";
+import { compare, hash } from "bcrypt";
 
 
 export async function POST(req: Request) {
@@ -30,9 +30,8 @@ export async function POST(req: Request) {
         }
     })
 
-    const oldHashed = await hash(oldPassword, 10)
 
-    if(oldHashed !== user.password){
+    if(!user || !(await compare(oldPassword, user.password))){
         return NextResponse.json(
             { error: "Incorrect Password" },
             { status: 401 }

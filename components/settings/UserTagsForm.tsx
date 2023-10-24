@@ -125,8 +125,8 @@ export default function UserTagsForm({
         </div>
         <div className="py-1">Add Tags to Help in Recommendations and reach</div>
         <div
-          className={`ease-in-out duration-200 transition-opacity flex space-x-4 text-gray-600 ${
-            showTagForm ? "opacity-0" : "opacity-100"
+          className={`ease-in-out duration-200 transition-all flex space-x-4 text-gray-600 ${
+            showTagForm ? "opacity-0" : "opacity-100 py-1"
           }`}
         >
           {userTagsFiltered.map((value, key) => {

@@ -63,8 +63,8 @@ export default function FullNameForm({ profile }: { profile: profile }) {
           <span>Full Name</span> <EditIcon />
         </div>
         <div
-          className={`ease-in-out duration-200 transition-opacity text-gray-600 ${
-            showFullNameInput ? "opacity-0" : "opacity-100"
+          className={`ease-in-out duration-200 transition-all text-gray-600 ${
+            showFullNameInput ? "opacity-0" : "opacity-100 py-1"
           }`}
         >
           {fullName}
