@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import HeartIcon, { SolidHeartIcon } from "../svg/HeartIcon";
 import NotificationIcon from "../svg/NotificationIcon";
+import WriterFollowButton from "./WriterFollowButton";
 
 export default function WriterIconsContainer({
   params,
@@ -9,6 +10,7 @@ export default function WriterIconsContainer({
   params: { slug: string };
 }) {
   const [following, setFollowing] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [followingLoading, setFollowingLoading] = useState<boolean>(false);
 
   const requestLikes = (function retrieveIfWriterLikes() {
@@ -17,16 +19,13 @@ export default function WriterIconsContainer({
 
       url.search = new URLSearchParams(params).toString();
 
-      return function fetchLike() {
-        setFollowingLoading(true);
+      return async function fetchLike() {
         if (followingLoading) {
           return;
         }
-        fetch(url)
+        setFollowingLoading(true);
+        await fetch(url)
           .then(async (response) => {
-            console.log("complete");
-            console.log(response.status);
-
             if (response.status === 200) {
               setFollowing(true);
               setFollowingLoading(false);
@@ -40,26 +39,30 @@ export default function WriterIconsContainer({
           });
       };
     } else {
-      return () => {};
+      return async () => {};
     }
   })();
 
+  const load = async function requestLikeAndNotificationStatus() {
+    await requestLikes();
+    setLoading(false);
+  };
+
   useEffect(() => {
-    requestLikes();
+    load();
   }, []);
+
+  if (loading) {
+    return <div>loading....</div>;
+  }
 
   return (
     <div className="flex space-x-4 py-4 px-2">
       <span>
         <NotificationIcon />
       </span>
-      <span>
-      {following ? (
-        <SolidHeartIcon/>
-      ) : (
-        <HeartIcon/>
-      )}
-      </span>
+
+      <WriterFollowButton params={params} followed={following} />
     </div>
   );
 }
