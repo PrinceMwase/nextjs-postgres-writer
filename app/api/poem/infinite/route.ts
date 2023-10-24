@@ -23,9 +23,11 @@ type parameters = {
   take: number;
   writerId?: number;
   writersId?: boolean;
+  notWritersId?: boolean;
+  genreId?: number;
 };
-
 export async function query(values: parameters) {
+  // Define the fields to select from the database
   const select = {
     id: true,
     content: true,
@@ -44,56 +46,159 @@ export async function query(values: parameters) {
       },
     },
   };
+
+  // Check if poems should be filtered by liked writers
   if (values.writersId) {
+    // Authorize the user
     const result = await authorize();
     if (result) {
+      // Retrieve liked and muted writers' IDs for the authorized user
       const user = await prisma.user.findUniqueOrThrow({
         where: {
           email: result,
         },
         select: {
           writerLike: true,
+          WriterMute: true,
         },
       });
 
-      const LikedWritersId = user.writerLike.map((v) => {
-        return v.id;
-      });
+      const LikedWritersId = user.writerLike.map((v) => v.writerId);
+      const MutedWritersId = user.WriterMute.map((v) => v.writerId);
 
+      // Retrieve poems from liked writers excluding muted writers
       return await prisma.poem.findMany({
         where: {
           writerId: {
             in: LikedWritersId,
+            notIn: MutedWritersId,
           },
         },
         select: select,
         skip: values.skip,
-        take: values.take, // Adjust the number of posts to load at once
+        take: values.take,
         orderBy: {
           id: "desc",
         },
       });
     }
-    return
+    return;
   }
 
+  // Check if poems should be filtered by muted writers
+  if (values.notWritersId) {
+    // Authorize the user
+    const result = await authorize();
+    if (result) {
+      // Retrieve muted writers' IDs for the authorized user
+      const user = await prisma.user.findUniqueOrThrow({
+        where: {
+          email: result,
+        },
+        select: {
+          WriterMute: true,
+        },
+      });
+
+      const MutedWritersId = user.WriterMute.map((v) => v.writerId);
+
+      // Retrieve poems from muted writers
+      return await prisma.poem.findMany({
+        where: {
+          writerId: {
+            in: MutedWritersId,
+          },
+        },
+        select: select,
+        skip: values.skip,
+        take: values.take,
+        orderBy: {
+          id: "desc",
+        },
+      });
+    }
+    return;
+  }
+
+  // Check if poems should be filtered by genre
+  if (values.genreId) {
+    // Authorize the user
+    const email = await authorize();
+    if (!email) {
+      return;
+    }
+
+    // Retrieve muted writers' IDs for the authorized user
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        email,
+      },
+      select: {
+        WriterMute: true,
+      },
+    });
+
+    const MutedWritersId = user.WriterMute.map((v) => v.writerId);
+
+    // Retrieve poems with a specific genre, excluding muted writers
+    return await prisma.poem.findMany({
+      where: {
+        genreId: values.genreId,
+        writerId: {
+          notIn: MutedWritersId,
+        },
+      },
+      select: select,
+      skip: values.skip,
+      take: values.take,
+      orderBy: {
+        id: "desc",
+      },
+    });
+  }
+
+  // Check if poems should be filtered by a specific writer ID
   if (values.writerId) {
+    // Retrieve poems by a specific writer
     return await prisma.poem.findMany({
       where: {
         writerId: values.writerId,
       },
       select: select,
       skip: values.skip,
-      take: values.take, // Adjust the number of posts to load at once
+      take: values.take,
       orderBy: {
         id: "desc",
       },
     });
   } else {
+    // Retrieve all poems excluding muted writers
+    const email = await authorize();
+    if (!email) {
+      return;
+    }
+
+    // Retrieve muted writers' IDs for the authorized user
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        email,
+      },
+      select: {
+        WriterMute: true,
+      },
+    });
+
+    const MutedWritersId = user.WriterMute.map((v) => v.writerId);
+
     return await prisma.poem.findMany({
+      where: {
+        writerId: {
+          notIn: MutedWritersId,
+        },
+      },
       select: select,
       skip: values.skip,
-      take: values.take, // Adjust the number of posts to load at once
+      take: values.take,
       orderBy: {
         id: "desc",
       },
@@ -106,7 +211,7 @@ export async function POST(req: Request) {
   const values: parameters = await req.json();
 
   const poems = await query(values);
-  
+
   if (poems) {
     poems.forEach((value) => {
       let plainContent =
