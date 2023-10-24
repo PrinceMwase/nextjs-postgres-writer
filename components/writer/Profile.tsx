@@ -5,13 +5,17 @@ import Categories from "@/components/writer/categories";
 import profile, { ProfilePoemType } from "types/profile";
 import { useState, useEffect } from "react";
 
-
-export default function Profile({ username, isProfile }: { username?: string, isProfile?:boolean }) {
+export default function Profile({
+  username,
+  isProfile,
+}: {
+  username?: string;
+  isProfile?: boolean;
+}) {
   const [profile, setProfile] = useState<profile>();
   const [poems, setPoems] = useState<ProfilePoemType[] | null>(null);
 
   const request = async function retrieveProfile() {
-
     if (username !== undefined) {
       return await fetch("/api/profile", {
         method: "POST",
@@ -53,6 +57,7 @@ export default function Profile({ username, isProfile }: { username?: string, is
       <div className="sm:w-full  mb-4 lg:mb-0 lg:basis-1/3">
         {profile !== undefined && (
           <Details
+            id={profile.writer[0].id}
             firstname={profile.firstname}
             lastname={profile.lastname}
             userTags={profile.userTags}

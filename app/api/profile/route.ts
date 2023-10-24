@@ -20,6 +20,7 @@ const userQuery: Prisma.UserSelect<DefaultArgs> = {
   },
 };
 const writerQuery: Prisma.WriterSelect<DefaultArgs> = {
+  id: true,
   username: true,
   about: true,
   photo: {

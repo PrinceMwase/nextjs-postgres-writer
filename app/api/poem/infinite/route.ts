@@ -2,10 +2,27 @@ import { LineProperty, payload } from "../../../../types/poem";
 import prisma from "../../../../lib/prisma";
 
 import { NextResponse } from "next/server";
+
+import { auth } from "lib/auth";
+
+export async function authorize() {
+  const authStatus = await auth();
+
+  if (!authStatus) {
+    return null;
+  }
+  const email = authStatus.user?.email;
+
+  if (!email) {
+    return null;
+  }
+  return email;
+}
 type parameters = {
   skip: number;
   take: number;
   writerId?: number;
+  writersId?: boolean;
 };
 
 export async function query(values: parameters) {
@@ -27,8 +44,40 @@ export async function query(values: parameters) {
       },
     },
   };
+  if (values.writersId) {
+    const result = await authorize();
+    if (result) {
+      const user = await prisma.user.findUniqueOrThrow({
+        where: {
+          email: result,
+        },
+        select: {
+          writerLike: true,
+        },
+      });
 
-  if (values.writerId)
+      const LikedWritersId = user.writerLike.map((v) => {
+        return v.id;
+      });
+
+      return await prisma.poem.findMany({
+        where: {
+          writerId: {
+            in: LikedWritersId,
+          },
+        },
+        select: select,
+        skip: values.skip,
+        take: values.take, // Adjust the number of posts to load at once
+        orderBy: {
+          id: "desc",
+        },
+      });
+    }
+    return
+  }
+
+  if (values.writerId) {
     return await prisma.poem.findMany({
       where: {
         writerId: values.writerId,
@@ -40,7 +89,7 @@ export async function query(values: parameters) {
         id: "desc",
       },
     });
-  else
+  } else {
     return await prisma.poem.findMany({
       select: select,
       skip: values.skip,
@@ -49,6 +98,7 @@ export async function query(values: parameters) {
         id: "desc",
       },
     });
+  }
 }
 
 export async function POST(req: Request) {
@@ -56,7 +106,7 @@ export async function POST(req: Request) {
   const values: parameters = await req.json();
 
   const poems = await query(values);
-
+  
   if (poems) {
     poems.forEach((value) => {
       let plainContent =

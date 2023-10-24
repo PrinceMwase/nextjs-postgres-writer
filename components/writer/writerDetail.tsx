@@ -1,16 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
 
 import { userDefinitions } from "types/profile";
 import IdCardIcon from "../svg/IdCardIcon";
 import InfoIcon from "../svg/InfoIcon";
-import HeartIcon from "../svg/HeartIcon";
-import NotificationIcon from "../svg/NotificationIcon";
 import HashTagIcon from "../svg/HashTagIcon";
+import WriterIconsContainer from "./WriterIconsContainer";
 
 interface Props extends userDefinitions {
+  id?: number
   pfp: string | undefined;
   about: string | null;
   username: string;
@@ -18,6 +17,7 @@ interface Props extends userDefinitions {
 }
 
 export default function Details({
+  id,
   username,
   userTags,
   about,
@@ -76,15 +76,8 @@ export default function Details({
       </div>
 
       {/* user icons */}
-      {!isProfile && (
-        <div className="flex space-x-4 py-4 px-2">
-          <span>
-            <NotificationIcon />
-          </span>
-          <span>
-            <HeartIcon />
-          </span>
-        </div>
+      {!isProfile && id && (
+        <WriterIconsContainer params={{slug:id.toString()}} />
       )}
     </>
   );

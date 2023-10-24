@@ -12,7 +12,9 @@ export default function Drawer() {
       className="fixed inset-y-0 left-0 w-64 bg-white border-r  text-gray-950 py-4 transform transition-transform ease-in-out duration-300 -translate-x-full"
     >
       <div className="w-full flex justify-between align-baseline">
-        <div className="px-4 text-xl"><span>Menu</span></div>
+        <div className="px-4 text-xl">
+          <span>Menu</span>
+        </div>
         <button id="close-drawer-button" className="px-4">
           <XIcon />
         </button>
@@ -21,10 +23,12 @@ export default function Drawer() {
       <div className="py-10">
         <ul>
           <li className="border-b cursor-pointer hover:bg-slate-100">
-            <div className="p-4 flex space-x-2 items-center">
-              <LikeIcon />
-              <span className="font-semibold text-lg">Following</span>
-            </div>
+            <Link href="/writer/following">
+              <div className="p-4 flex space-x-2 items-center">
+                <LikeIcon />
+                <span className="font-semibold text-lg">Following</span>
+              </div>
+            </Link>
           </li>
           <li className="border-b cursor-pointer hover:bg-slate-100">
             <div className="p-4 flex space-x-2 items-center">
