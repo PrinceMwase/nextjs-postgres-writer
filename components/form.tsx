@@ -20,7 +20,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
           signIn("credentials", {
             redirect: false,
             email: e.currentTarget.email.value,
-            password: e.currentTarget.password.value,
+            password: e.currentTarget.password.value
             // @ts-ignore
           }).then(({ error }) => {
             if (error) {

@@ -3,7 +3,7 @@ import NavBar from "../navigation/navbar";
 export default function Hero() {
   return (
     <div className="w-full h-full min-h-screen flex flex-row py-8 bg-[url('/heroBG.png')] bg-no-repeat bg-cover">
-      <div className="lg:basis-1/2 md:basis-1/3 ">logo and shit</div>
+      <div className="lg:basis-1/2 md:basis-1/3 "></div>
 
       <div className="lg:basis-1/2 md:basis-2/3">
         <div className="flex flex-col">

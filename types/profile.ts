@@ -10,6 +10,7 @@ export type userDefinitions = {
 }
 
 export type Writer = {
+  id: number,
   username: string;
   about: string | null;
   photo: {
