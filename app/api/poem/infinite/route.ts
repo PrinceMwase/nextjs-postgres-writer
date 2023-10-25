@@ -24,7 +24,7 @@ type parameters = {
   writerId?: number;
   writersId?: boolean;
   notWritersId?: boolean;
-  genreId?: number;
+  genreId?: string;
 };
 export async function query(values: parameters) {
   // Define the fields to select from the database
@@ -143,10 +143,12 @@ export async function query(values: parameters) {
     // Retrieve poems with a specific genre, excluding muted writers
     return await prisma.poem.findMany({
       where: {
-        genreId: values.genreId,
         writerId: {
           notIn: MutedWritersId,
         },
+        genre:{
+          genre: values.genreId
+        }
       },
       select: select,
       skip: values.skip,

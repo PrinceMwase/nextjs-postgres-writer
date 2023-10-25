@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ProfilePoemType } from "types/profile";
 
 export default function Categories({ poems }: { poems: ProfilePoemType[] }) {
@@ -39,7 +40,9 @@ export default function Categories({ poems }: { poems: ProfilePoemType[] }) {
       <div className="flex py-2">
         <div className="m-auto flex space-x-10">
           {categories.map((category, index) => (
-            <div key={index}>
+            <Link key={index} href={`/genres/${category.genre}`}>
+            
+            <div >
               <span className="">
                 <Image
                   src={category.photo.link}
@@ -51,6 +54,7 @@ export default function Categories({ poems }: { poems: ProfilePoemType[] }) {
                 <div className="m-auto w-full text-center text-ellipsis capitalize font-semibold">{category.genre}</div>
               </span>
             </div>
+            </Link>
           ))}
         </div>
       </div>

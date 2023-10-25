@@ -2,7 +2,7 @@
 // components/InfiniteScroll.js
 import { payload, payload as payloadType } from "../../types/poem";
 
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ViewPoem from "@/components/poem/view";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -25,12 +25,14 @@ export default function Infinite({
   writerId,
   children,
   writersId,
-  notWritersId
+  notWritersId,
+  genreId,
 }: {
   writerId?: number;
   children?: React.ReactNode;
   writersId?: boolean;
   notWritersId?: boolean;
+  genreId?: string;
 }) {
   const [allPoems, setAllPoems] = useState<payload[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -52,6 +54,7 @@ export default function Infinite({
           writerId,
           writersId,
           notWritersId,
+          genreId,
           skip: allPoems.length,
           take: 2, // Adjust the number of posts to load at once
         }),
@@ -61,8 +64,8 @@ export default function Infinite({
           if (newPoems.length === 0) {
             setHasMore(false);
           } else {
-            if (allPoems === null || allPoems === undefined) {
-              setAllPoems([...newPoems]);
+            if (allPoems.length === 0) {
+              setAllPoems(newPoems);
             } else {
               setAllPoems((oldPoems) => {
                 return [...oldPoems, ...newPoems];
@@ -78,10 +81,10 @@ export default function Infinite({
 
   useEffect(() => {
     fetchLikes();
-  return ()=>{
-    setAllPoems([]);
-    setHasMore(true);
-  }
+    return () => {
+      setAllPoems([]);
+      setHasMore(true);
+    };
   }, []);
 
   return (
@@ -90,8 +93,7 @@ export default function Infinite({
         dataLength={allPoems.length} //This is important field to render the next data
         next={fetchMorePosts}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>
-        }
+        loader={<h4>Loading...</h4>}
         endMessage={
           <p style={{ textAlign: "center" }}>
             <b>Yay! You have seen it all</b>
