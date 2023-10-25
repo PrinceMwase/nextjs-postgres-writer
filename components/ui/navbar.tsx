@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import HouseIcon from "../svg/HouseIcon";
 import Link from "next/link";
 import LargeScreenMenu from "./LargeScreenMenu";
@@ -22,16 +22,6 @@ export const links: navLink[] = [
 
 const Navbar = () => {
   useEffect(() => {
-    // Add event listener to open drawer
-    const openDrawerButton = document.getElementById("open-drawer-button");
-    openDrawerButton?.addEventListener("click", () => {
-      const drawer = document.getElementById("drawer");
-
-      drawer?.classList.contains("translate-x-0")
-        ? drawer?.classList.remove("translate-x-0")
-        : drawer?.classList.add("translate-x-0");
-    });
-
     // Add event listener to close drawer
     const closeDrawerButton = document.getElementById("close-drawer-button");
     closeDrawerButton?.addEventListener("click", () => {
@@ -59,18 +49,25 @@ const Navbar = () => {
 
           <form action="">
             <div className="flex border rounded-full border-gray-950 px-2 items-center">
-            <SearchIcon/>
-            <input
-              type="text"
-              placeholder="search"
-              className="focus-visible:outline-none bg-transparent px-2 focus-visible:border-none w-40 rounded-full"
-            />
+              <SearchIcon />
+              <input
+                type="text"
+                placeholder="search"
+                className="focus-visible:outline-none bg-transparent px-2 focus-visible:border-none w-40 rounded-full"
+              />
             </div>
           </form>
 
           <button
             className="text-gray-950 focus:outline-none"
             id="open-drawer-button"
+            onClick={() => {
+              const drawer = document.getElementById("drawer");
+
+              drawer?.classList.contains("translate-x-0")
+                ? drawer?.classList.remove("translate-x-0")
+                : drawer?.classList.add("translate-x-0");
+            }}
           >
             <HamBurgerIcon />
           </button>
