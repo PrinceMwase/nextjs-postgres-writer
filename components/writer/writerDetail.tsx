@@ -29,15 +29,15 @@ export default function Details({
   return (
     <>
       {/* profile image  */}
-      <div className="p-4">
+      {/* <div className="p-4">
         <Image
           src={pfp ?? "/pfp.jpeg"}
-          width={400}
-          height={400}
+          width={200}
+          height={200}
           alt="Picture of the author"
           className="rounded-full m-auto"
         />
-      </div>
+      </div> */}
 
       {/* user details */}
       <div className="px-2 space-y-4">

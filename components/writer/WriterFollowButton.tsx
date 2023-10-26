@@ -16,6 +16,7 @@ export default function WriterFollowButton(
 
   const followChecks = function followRequestChecks() {
     if (followingLoading) {
+      toast.success("a request is already being processed")
       return true;
     }
     if (following === true) {
@@ -50,6 +51,7 @@ export default function WriterFollowButton(
 
   const unFollowChecks = function followRequestChecks() {
     if (followingLoading) {
+      toast.success("a request is already being processed")
       return true;
     }
     if (following === false) {

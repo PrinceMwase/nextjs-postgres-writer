@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Read } from "./line";
 import Link from "next/link";
 import { payload, commentType } from "../../types/poem";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Like from "./like";
 import Delete from "./delete";
 import ChatIcon from "../svg/ChatIcon";
@@ -24,6 +24,7 @@ export default function ViewPoem({
   const [commentCount, setCommentCount] = useState<number>(
     myPayload._count?.comments
   );
+  const pathname = usePathname();
   const color = myPayload.background == "light" ? "#000000" : "#ffffff";
   if ("error" in myPayload) {
     return <></>;
@@ -141,7 +142,7 @@ export default function ViewPoem({
 
           {/* Footer */}
           <footer className="flex items-center justify-between leading-none p-2 space-x-20  md:p-4">
-            <Delete id={payload.id} color={color} />
+            {pathname === "/profile" ? <Delete id={payload.id} color={color} /> : <div></div>}
 
             {/* like and comment */}
             <div className="flex space-x-4 items-center">

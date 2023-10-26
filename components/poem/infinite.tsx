@@ -93,10 +93,22 @@ export default function Infinite({
         dataLength={allPoems.length} //This is important field to render the next data
         next={fetchMorePosts}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
+        loader={<h4 className="mx-auto w-max">Loading... Pull down to refresh</h4>}
         endMessage={
           <p style={{ textAlign: "center" }}>
-            <b>Yay! You have seen it all</b>
+            <b>
+              Yay! You have seen it all{" "}
+              <button
+                onClick={async () => {
+                  setAllPoems([]);
+                  setHasMore(true);
+                  await fetchMorePosts();
+                }}
+                className="text-gray-900 border border-black px-1 hover:text-black transition-all"
+              >
+                Refresh
+              </button>{" "} or Pull down
+            </b>
           </p>
         }
         // below props only if you need pull down functionality

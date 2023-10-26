@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 import profile from "types/profile";
 import AboutForm from "./AboutForm";
 import FullNameForm from "./FullNameForm";
@@ -7,6 +8,7 @@ import UserTagsForm from "./UserTagsForm";
 
 export default function UserDetailsForm({ show }: { show: boolean }) {
   const [profile, setProfile] = useState<profile>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const request = async function retrieveProfile() {
     await fetch("/api/profile", {
@@ -18,22 +20,30 @@ export default function UserDetailsForm({ show }: { show: boolean }) {
         const user: profile = data.user;
 
         setProfile(user);
-
-        
+        setLoading(false)
       }
-    });
+    }).catch(()=>{
+      toast.error("Failed to load user Profile")
+    })
   };
-
 
   useEffect(() => {
     request();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="px-4 ease-in-out duration-300 transition-opacity space-y-4">
+        loading...
+      </div>
+    );
+  }
+
   return (
     <>
       {profile && (
         <div
-          className={` px-4 ease-in-out duration-300 transition-opacity space-y-4 ${
+          className={` px-4 ease-in-out duration-200 transition-opacity space-y-4 ${
             show ? "opacity-100" : "opacity-0"
           }`}
         >

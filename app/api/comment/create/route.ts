@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
+import { authorize } from "../../poem/infinite/route";
 
 type requestData = {
     comment: string;
@@ -9,9 +10,17 @@ type requestData = {
 
 export async function POST(req: Request){
     const comment: requestData = await req.json();
-    const session = await getServerSession();
+    const email = await authorize();
+    if (!email) {
+      return NextResponse.json(
+        {
+          error: "not authenticated",
+        },
+        { status: 401 }
+      );
+    }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findUniqueOrThrow({
         select: {
           writer: {
             select: {
@@ -20,15 +29,15 @@ export async function POST(req: Request){
           },
         },
         where: {
-          email: session?.user?.email,
+          email,
         },
       });
-      if (user?.writer.length !== undefined && user?.writer.length > 0) {
+      if (user.writer.length !== undefined && user.writer.length > 0) {
 
         const results = await prisma.comment.create({
           data: {
               content: comment.comment,
-              writerId: user?.writer[0].id ?  user?.writer[0].id : 1,
+              writerId:  user.writer[0].id ,
               poemId: comment.poemId
           }
         })

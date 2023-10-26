@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import MuteIcon from "../svg/MuteIcon";
 import NotificationIcon, { NotificationDisabledIcon } from "../svg/NotificationIcon";
+import SpeakerIcon from "../svg/SpeakerIcon";
 
 export default function WriterMuteButton(
   {
@@ -16,6 +18,7 @@ export default function WriterMuteButton(
 
   const muteChecks = function RequestChecks() {
     if (muteLoading) {
+      toast.success("a request is already being processed")
       return true;
     }
     if (mute === true) {
@@ -50,6 +53,7 @@ export default function WriterMuteButton(
 
   const unmuteChecks = function followRequestChecks() {
     if (muteLoading) {
+      toast.success("a request is already being processed")
       return true;
     }
     if (mute === false) {
@@ -85,11 +89,11 @@ export default function WriterMuteButton(
 
   return mute ? (
     <span onClick={unMute} className="cursor-pointer">
-      <NotificationDisabledIcon />
+      <MuteIcon />
     </span>
   ) : (
     <span onClick={muteRequest} className="cursor-pointer">
-      <NotificationIcon />
+      <SpeakerIcon />
     </span>
   )
 }

@@ -38,12 +38,7 @@ export default function Drawer() {
               </div>
             </Link>
           </li>
-          <li className="border-b cursor-pointer hover:bg-slate-100">
-            <div className="p-4 flex space-x-2 items-center">
-              <NotificationIcon />
-              <span className="font-semibold text-lg">Notifications</span>
-            </div>
-          </li>
+         
           <li className="border-b cursor-pointer hover:bg-slate-100">
             <Link href="/settings">
               <div className="p-4 flex space-x-2 items-center">

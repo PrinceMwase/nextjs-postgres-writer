@@ -1,13 +1,20 @@
 import { createType } from "../../../../types/poem";
 import prisma from "@/lib/prisma";
-import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
+import { authorize } from "../infinite/route";
 
 export async function POST(req: Request) {
   const payload: createType = await req.json();
-  const session = await getServerSession();
-
-  const user = await prisma.user.findUnique({
+  const email = await authorize();
+  if (!email) {
+    return NextResponse.json(
+      {
+        error: "not authenticated",
+      },
+      { status: 401 }
+    );
+  }
+  const user = await prisma.user.findUniqueOrThrow({
     select: {
       writer: {
         select: {
@@ -16,36 +23,29 @@ export async function POST(req: Request) {
       },
     },
     where: {
-      email: session?.user?.email,
+      email,
     },
   });
 
-  if (!user) {
-    return NextResponse.json(
-      { error: "You are not authenticated" },
-      { status: 400 }
-    );
-  }
-
   // const writerId = user?.writer[0]?.id
-  if (user?.writer.length !== undefined && user?.writer.length > 0) {
+  if (payload.lines.length > 1000) {
+    return NextResponse.error();
+  }
+  if (user.writer.length > 0) {
     const results = await prisma.poem.create({
       data: {
         background: payload.background,
         title: payload.title,
         content: JSON.stringify(payload.lines),
-        writerId: user?.writer[0].id ? user?.writer[0].id : 1,
+        writerId: user.writer[0].id,
         description: payload.description ?? "",
-        genreId: payload.genreId
+        genreId: payload.genreId,
       },
     });
     if (results) {
       return NextResponse.json(results, { status: 200 });
     } else {
-      return NextResponse.json(
-        { error: "Failed to Create" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Failed to Create" }, { status: 400 });
     }
   } else {
     return NextResponse.json(

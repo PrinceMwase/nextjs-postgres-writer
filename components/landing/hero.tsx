@@ -1,3 +1,4 @@
+import Link from "next/link";
 import NavBar from "../navigation/navbar";
 
 export default function Hero() {
@@ -30,9 +31,9 @@ export default function Hero() {
           </div>
           <div>
             <div className="px-2">
-              <button className="text-black text-lg font-bold bg-button-color rounded-full px-4 py-2 uppercase">
+              <Link href={"/login"} className="text-black text-lg font-bold bg-button-color rounded-full px-4 py-2 uppercase">
                 get started
-              </button>
+              </Link>
             </div>
           </div>
         </div>

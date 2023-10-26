@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { poemLikeType } from "types/like";
 import HeartIcon, { SolidHeartIcon } from "../svg/HeartIcon";
 
@@ -43,6 +44,7 @@ export default function Like({
       onClick={(e) => {
         e.preventDefault();
         if (loading) {
+          toast.success("a request is already being processed")
           return;
         } else {
           sendLike();
