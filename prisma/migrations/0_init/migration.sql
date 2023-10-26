@@ -5,6 +5,10 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "firstname" TEXT,
     "lastname" TEXT,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "verificationToken" TEXT,
+    "resetToken" TEXT,
+    "resetTokenExpiry" TIMESTAMP(3),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -118,6 +122,12 @@ CREATE TABLE "Photo" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_verificationToken_key" ON "User"("verificationToken");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_resetToken_key" ON "User"("resetToken");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Writer_username_key" ON "Writer"("username");
 
 -- CreateIndex
@@ -149,6 +159,9 @@ CREATE UNIQUE INDEX "Tag_tag_key" ON "Tag"("tag");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "userTags_userId_tagId_key" ON "userTags"("userId", "tagId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Genre_genre_key" ON "Genre"("genre");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Genre_photoId_key" ON "Genre"("photoId");

@@ -9,6 +9,7 @@ import SearchIcon from "../svg/SearchIcon";
 import HamBurgerIcon from "../svg/HamBurgerIcon";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { SessionProvider, useSession } from "next-auth/react";
 
 export type navLink = {
   link: string;
@@ -22,6 +23,17 @@ export const links: navLink[] = [
 ];
 
 const Navbar = () => {
+  return (
+    <SessionProvider>
+      <FilteredNav />
+    </SessionProvider>
+  );
+};
+
+export default Navbar;
+
+function FilteredNav() {
+  const session = useSession();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -31,69 +43,84 @@ const Navbar = () => {
       const drawer = document.getElementById("drawer");
       drawer?.classList.remove("translate-x-0");
     });
+    console.log(pathname);
+
+    console.log(session);
   }, []);
 
   switch (pathname) {
     case "/login":
-      return <></>
+      return <></>;
     case "/register":
-      return <></>
+      return <></>;
     case "/verification-success":
-      return <></>
+      return <></>;
+    case "/forgot-password":
+      return <></>;
+    case "/no-user":
+      return <></>;
+    case "/verify":
+      return <></>;
     case "/about":
-      return <></>
+      return <></>;
     case "/home":
-      return <></>
+      return <></>;
     case "/verification-failure":
-      return <></>
+      return <></>;
     default:
-      return (
-        <nav className="backdrop-blur-md border-b border-slate-900/10 bg-white/30 py-4 sticky top-0 w-full">
-          <div className="flex justify-between px-4 w-full">
-            <div className="text-gray-950 text-xl font-semibold">
-              <Link
-                href="/"
-                className="text-gray-950 flex hover:text-gray-800 space-x-2"
-              >
-                <HouseIcon />
-                <span className="hidden md:inline text-xl font-medium">Home</span>
-              </Link>
+      if (
+        session.data === undefined ||
+        session.status === "loading" ||
+        session.status === "unauthenticated"
+      ) {
+        return <></>;
+      } else
+        return (
+          <nav className="backdrop-blur-md border-b border-slate-900/10 bg-white/30 py-4 sticky top-0 w-full">
+            <div className="flex justify-between px-4 w-full">
+              <div className="text-gray-950 text-xl font-semibold">
+                <Link
+                  href="/"
+                  className="text-gray-950 flex hover:text-gray-800 space-x-2"
+                >
+                  <HouseIcon />
+                  <span className="hidden md:inline text-xl font-medium">
+                    Home
+                  </span>
+                </Link>
+              </div>
+              <div className="flex items-center space-x-4 md:space-x-8">
+                <LargeScreenMenu />
+
+                <SmallScreenMenu />
+
+                <form action="">
+                  <div className="flex border rounded-full border-gray-950 px-2 items-center">
+                    <SearchIcon />
+                    <input
+                      type="text"
+                      placeholder="search"
+                      className="focus-visible:outline-none bg-transparent px-2 focus-visible:border-none w-40 rounded-full"
+                    />
+                  </div>
+                </form>
+
+                <button
+                  className="text-gray-950 focus:outline-none"
+                  id="open-drawer-button"
+                  onClick={() => {
+                    const drawer = document.getElementById("drawer");
+
+                    drawer?.classList.contains("translate-x-0")
+                      ? drawer?.classList.remove("translate-x-0")
+                      : drawer?.classList.add("translate-x-0");
+                  }}
+                >
+                  <HamBurgerIcon />
+                </button>
+              </div>
             </div>
-            <div className="flex items-center space-x-4 md:space-x-8">
-              <LargeScreenMenu />
-    
-              <SmallScreenMenu />
-    
-              <form action="">
-                <div className="flex border rounded-full border-gray-950 px-2 items-center">
-                  <SearchIcon />
-                  <input
-                    type="text"
-                    placeholder="search"
-                    className="focus-visible:outline-none bg-transparent px-2 focus-visible:border-none w-40 rounded-full"
-                  />
-                </div>
-              </form>
-    
-              <button
-                className="text-gray-950 focus:outline-none"
-                id="open-drawer-button"
-                onClick={() => {
-                  const drawer = document.getElementById("drawer");
-    
-                  drawer?.classList.contains("translate-x-0")
-                    ? drawer?.classList.remove("translate-x-0")
-                    : drawer?.classList.add("translate-x-0");
-                }}
-              >
-                <HamBurgerIcon />
-              </button>
-            </div>
-          </div>
-        </nav>
-      );
+          </nav>
+        );
   }
-
-};
-
-export default Navbar;
+}

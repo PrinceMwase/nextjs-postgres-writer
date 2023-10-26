@@ -17,13 +17,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "User already exists" }, { status: 400 });
   } else {
     const verificationToken = generateVerificationToken();
-    const verificationLink = `https://${process.env.DOMAIN}/verify?token=${verificationToken}`;
+    const verificationLink = `${process.env.DOMAIN}/verify/${verificationToken}`;
 
     const mailOptions = {
       from: process.env.EMAIL_USERNAME,
       to: email,
       subject: 'Email Verification',
-      html: `Click <a href="${verificationLink}">here</a> to verify your email.`,
+      html: `Click <a href="${verificationLink}">${verificationLink}</a> to verify your email.`,
     };
     const info = await mailTransporter(mailOptions).catch(console.error);
     console.log("Message sent: %s", info.messageId);

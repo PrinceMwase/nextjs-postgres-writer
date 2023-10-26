@@ -122,6 +122,15 @@ export default function Form({ type }: { type: "login" | "register" }) {
         )}
       </button>
       {type === "login" ? (
+        <>
+        
+        <p className="text-center text-sm text-gray-600">
+         
+          <Link href="/forgot-password" className="font-semibold text-gray-800">
+            Forgot Password?
+          </Link>{" "}
+         
+        </p>
         <p className="text-center text-sm text-gray-600">
           Don&apos;t have an account?{" "}
           <Link href="/register" className="font-semibold text-gray-800">
@@ -129,6 +138,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
           </Link>{" "}
           for free.
         </p>
+        </>
       ) : (
         <p className="text-center text-sm text-gray-600">
           Already have an account?{" "}

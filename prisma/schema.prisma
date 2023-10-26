@@ -1,5 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -10,18 +10,20 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique
-  password   String
-  firstname  String?
-  lastname   String?
-  PoemLike   PoemLike[]
-  writer     Writer[]
-  writerLike writerLike[]
-  userTags   userTags[]
-  WriterMute WriterMute[]
-  emailVerified   Boolean    @default(false)
-  verificationToken String?
+  id                Int          @id @default(autoincrement())
+  email             String       @unique
+  password          String
+  firstname         String?
+  lastname          String?
+  PoemLike          PoemLike[]
+  writer            Writer[]
+  writerLike        writerLike[]
+  userTags          userTags[]
+  WriterMute        WriterMute[]
+  emailVerified     Boolean      @default(false)
+  verificationToken String?      @unique
+  resetToken        String?      @unique // New field for password reset token
+  resetTokenExpiry  DateTime?  // New field for reset token expiry timestamp
 }
 
 model Writer {
@@ -51,7 +53,7 @@ model Poem {
   writerId    Int
   writer      Writer     @relation(fields: [writerId], references: [id])
   genreId     Int?
-  genre       Genre?      @relation(fields: [genreId], references: [id])
+  genre       Genre?     @relation(fields: [genreId], references: [id])
   PoemLike    PoemLike[]
   description String?
 }
