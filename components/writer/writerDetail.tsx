@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 
 import { userDefinitions } from "types/profile";
 import IdCardIcon from "../svg/IdCardIcon";

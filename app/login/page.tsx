@@ -13,8 +13,8 @@ export default function Login() {
               priority
               alt="Logo"
               className="h-10 w-10 rounded-full"
-              width={20}
-              height={20}
+              width={100}
+              height={100}
             />
           </Link>
           <h3 className="text-xl font-semibold">Sign In</h3>

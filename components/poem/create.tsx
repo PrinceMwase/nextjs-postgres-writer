@@ -26,7 +26,7 @@ export default function CreatePoem() {
   }
 
   if (status === "unauthenticated") {
-    return <p>Access Denied</p>;
+    return <p>Wait a moment...</p>;
   }
 
   const reset = function resetStates() {
