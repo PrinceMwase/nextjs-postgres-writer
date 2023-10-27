@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
+import { myFont } from "../ui/navbar";
 
 export default function Hero() {
   return (
-    <div className="w-full h-full min-h-screen bg-fixed flex flex-row py-8 bg-[url('/heroBG.png')] bg-no-repeat bg-cover">
+    <div className="w-full h-full min-h-screen bg-fixed flex flex-row py-8 bg-[url('/heroBG.jpeg')] bg-no-repeat bg-cover">
       <div className="lg:basis-1/2 md:basis-1/3 ">
 
         <div className="">
@@ -19,7 +20,7 @@ export default function Hero() {
 
       <div className="lg:basis-1/2 md:basis-2/3">
         <div className="flex flex-col">
-          <div className="font-maglite py-8">
+          <div className={`${myFont.className} py-8`}>
             <div className="px-2">
               <span className="text-8xl font-semibold text-left text-heading-color">
                 Poet&apos;s

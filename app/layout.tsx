@@ -11,6 +11,7 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+
 const title = "Poet's Haven";
 const description =
   "This is an inclusive place for anyone who wants to jot down a poem";
@@ -33,8 +34,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="max-h-max">
-      <body className={inter.variable}>
+    <html lang="en">
+      <body className={`${inter.variable} max-h-max antialiased`}>
         <Toaster />
         <Navbar />
         {/* Drawer */}

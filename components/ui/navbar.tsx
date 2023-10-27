@@ -10,12 +10,19 @@ import HamBurgerIcon from "../svg/HamBurgerIcon";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { SessionProvider, useSession } from "next-auth/react";
+import localFont from "next/font/local";
 
 export type navLink = {
   link: string;
   Icon: () => JSX.Element;
   name: string;
 };
+
+// Font files can be colocated inside of `app`
+export const myFont = localFont({
+  src: '../../public/Maglite-Font/Maglite.ttf',
+  display: 'swap',
+})
 
 export const links: navLink[] = [
   { link: "/profile", Icon: ProfileIcon, name: "Profile" },
@@ -76,7 +83,7 @@ function FilteredNav() {
         return <></>;
       } else
         return (
-          <nav className="backdrop-blur-md border-b border-slate-900/10 bg-white/30 py-4 sticky top-0 w-full">
+          <nav className="backdrop-blur-md bg-white/30 border-b border-slate-900/10 py-4 sticky top-0 w-full">
             <div className="flex justify-between px-4 w-full">
               <div className="text-gray-950 text-xl font-semibold">
                 <Link

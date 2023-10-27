@@ -5,7 +5,7 @@ export default function Features() {
   return (
     <div className="w-full h-full min-h-max bg-fixed bg-[url('/female.jpeg')] bg-no-repeat bg-cover">
       <div className="space-y-16">
-        <div className="p-8 text-lg w-3/4 bg-white md:w-1/2 text-heading-color font-medium">
+        <div className="relative -top-11 p-8 text-lg w-3/4 bg-white md:w-1/2 text-heading-color font-medium">
           <div>
             A platform designed and developed with love for poetry enthusiasts
           </div>
@@ -30,7 +30,7 @@ export default function Features() {
         </div>
         <div></div>
 
-        <div className="p-8   bg-white bottom-0  text-heading-color space-y-4 font-medium">
+        <div className="p-8 bg-white bottom-0  text-heading-color space-y-4 font-medium">
           <div className="flex space-x-4">
             
             <Link href={"https://twitter.com/yknowthevibe"}>

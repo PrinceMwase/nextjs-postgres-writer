@@ -12,7 +12,7 @@ export default function About() {
         <div className="flex flex-col">
           <div className="py-10 space-y-8 bg-white bg-[url('/note.jpeg')] bg-no-repeat bg-cover">
             <div className="px-2 font-medium">
-              <div className="text-justify text-heading-color text-lg w-4/5">
+              <div className="text-justify text-heading-color text-lg w-4/5 backdrop-blur-md bg-white/30">
                 Our poetic journey began with a simple truth: poetry is the
                 language of the soul. Each poem is a portal to another world, a
                 melody that resonates with the core of human experience. As

@@ -3,10 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("POSTGRES_PRISMA_URL")
-  directUrl         = env("POSTGRES_URL_NON_POOLING")
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
@@ -22,8 +21,10 @@ model User {
   WriterMute        WriterMute[]
   emailVerified     Boolean      @default(false)
   verificationToken String?      @unique
+  suspended         Boolean?     @default(false)
+  verifiedUser      Boolean?     @default(false)
   resetToken        String?      @unique // New field for password reset token
-  resetTokenExpiry  DateTime?  // New field for reset token expiry timestamp
+  resetTokenExpiry  DateTime? // New field for reset token expiry timestamp
 }
 
 model Writer {

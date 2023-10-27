@@ -12,16 +12,22 @@ export default async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-
   if (!session && path === "/") {
     return NextResponse.redirect(new URL("/home", req.url));
   }
-  if (!session && path === "/profile") {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
 
-  if (!session && path === "/protected") {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (!session) {
+    if (
+      path.startsWith("/profile") ||
+      path.startsWith("/genres") ||
+      path.startsWith("/poem") ||
+      path.startsWith("/settings") ||
+      path.startsWith("/writer")
+    ) {
+      return NextResponse.redirect(new URL("/login", req.url));
+    } else {
+      return NextResponse.next();
+    }
   } else if (session && (path === "/login" || path === "/register")) {
     return NextResponse.redirect(new URL("/", req.url));
   }

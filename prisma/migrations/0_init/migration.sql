@@ -7,6 +7,8 @@ CREATE TABLE "User" (
     "lastname" TEXT,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "verificationToken" TEXT,
+    "suspended" BOOLEAN DEFAULT false,
+    "verifiedUser" BOOLEAN DEFAULT false,
     "resetToken" TEXT,
     "resetTokenExpiry" TIMESTAMP(3),
 
