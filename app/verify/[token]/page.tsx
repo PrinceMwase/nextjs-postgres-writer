@@ -23,7 +23,7 @@ export default function Page({ params }: { params: { token: string } }) {
           router.push("/verification-failure");
         });
     }
-  }, []);
+  }, [params, router]);
 
   if (loading) {
     return <div>loading....</div>;

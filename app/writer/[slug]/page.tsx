@@ -23,7 +23,7 @@ export default function Writer({ params }: { params: { slug: string } }) {
         setUsername(writer);
       });
     }
-  }, []);
+  }, [params]);
 
   return (
     <div className="h-max">

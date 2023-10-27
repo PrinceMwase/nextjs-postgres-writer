@@ -10,7 +10,7 @@ const ConfirmationModal = ({
       <div className="bg-white p-8 rounded-lg shadow-lg text-black">
         <p className="text-xl font-semibold capitalize">delete poem?</p>
         <p className="mb-4 text-sm md:text-normal">
-          This can't be undone and It will be removed from this platform
+          This can&apos;t be undone and It will be removed from this platform
           forever
         </p>
         <div className="flex justify-end">

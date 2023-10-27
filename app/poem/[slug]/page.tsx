@@ -34,7 +34,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           console.error(error);
         });
     }
-  }, []);
+  }, [params]);
 
   if (poem === undefined) {
     return;

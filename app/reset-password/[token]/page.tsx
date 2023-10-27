@@ -38,7 +38,7 @@ export default function Page({ params }: { params: { token: string }}) {
           router.push("/forgot-password");
         });
     }
-  }, []);
+  }, [params, router]);
 
 
   if(verification){

@@ -90,7 +90,7 @@ export default function Settings() {
           <div className="text-xl font-semibold">Privacy</div>
           <div>
             <p className="text-gray-700">
-              YKTVibe's data is securely self-hosted and it is not shared with
+              YKTVibe&apos;s data is securely self-hosted and it is not shared with
               no outside sources. This means that the app is managed and
               maintained by Prince Mwase personally, ensuring the highest level
               of control and security over the platform. Thank you for being a

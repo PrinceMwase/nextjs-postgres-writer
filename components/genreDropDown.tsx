@@ -6,7 +6,7 @@ import {
 } from "react";
 import { genreType } from "types/genre";
 
-export default function genreDropDown({
+export default function GenreDropDown({
   ...args
 }: DetailedHTMLProps<
   SelectHTMLAttributes<HTMLSelectElement>,
