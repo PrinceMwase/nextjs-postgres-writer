@@ -33,7 +33,9 @@ export default function UserDetailsForm({ show }: { show: boolean }) {
 
   if (loading) {
     return (
-      <div className="px-4 ease-in-out duration-300 transition-opacity space-y-4">
+      <div className={`px-4 ease-in-out duration-300 transition-opacity space-y-4 ${
+        show ? "opacity-100" : "opacity-0"
+      }`}>
         loading...
       </div>
     );

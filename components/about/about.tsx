@@ -10,10 +10,7 @@ export default function About() {
 
       <div className="lg:basis-1/2 md:basis-2/3 ">
         <div className="flex flex-col">
-
           <div className="py-10 space-y-8 bg-white bg-[url('/note.jpeg')] bg-no-repeat bg-cover">
-            
-
             <div className="px-2 font-medium">
               <div className="text-justify text-heading-color text-lg w-4/5">
                 Our poetic journey began with a simple truth: poetry is the
@@ -25,7 +22,7 @@ export default function About() {
               </div>
             </div>
             <div className="px-2 text-heading-color font-medium">
-              <div>A Poet&apos;s haven</div>
+              <div>A Poet&apos;s Haven</div>
             </div>
           </div>
         </div>

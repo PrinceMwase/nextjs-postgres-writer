@@ -97,11 +97,6 @@ export default function Settings() {
               part of the YKTVibe community. We hope you find inspiration and
               connection within our poetic haven.
             </p>
-            <div className="py-2 space-y-2">
-
-            <p>Best Regards</p>
-            <p>Prince Mwase</p>
-            </div>
           </div>
         </div>
       </div>
