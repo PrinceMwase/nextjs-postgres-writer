@@ -25,9 +25,8 @@ export async function POST(req: Request) {
       subject: 'Email Verification',
       html: `Click <a href="${verificationLink}">${verificationLink}</a> to verify your email.`,
     };
-    mailTransporter(mailOptions).catch(console.error);
-
-    prisma.user.create({
+    
+    await prisma.user.create({
       data: {
         email,
         password: await hash(password, 10),
@@ -44,6 +43,7 @@ export async function POST(req: Request) {
         writer: true
       }
     });
+    mailTransporter(mailOptions).catch(console.error);
     return NextResponse.json({success: "success"}, {status: 200});
   }
 }
