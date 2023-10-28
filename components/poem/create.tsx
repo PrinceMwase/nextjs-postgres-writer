@@ -25,10 +25,6 @@ export default function CreatePoem() {
     return <p>Loading...</p>;
   }
 
-  if (status === "unauthenticated") {
-    return <p>Wait a moment...</p>;
-  }
-
   const reset = function resetStates() {
     setLoading(false);
     setContent("");
@@ -221,9 +217,24 @@ export default function CreatePoem() {
             />
           )}
         </div>
+        {!confirm && (
+          <div className="px-8 mb-4 ">
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+              disabled={loading}
+              className="w-full inline border-b-2 h-10 border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+              placeholder="Add a short description here"
+            />
+          </div>
+        )}
+
 
         <div className="px-8 flex space-x-2">
-          {!confirm && (
+          {confirm && (
             <>
               <button
                 className="h-10 px-6 font-semibold rounded-none bg-black text-white"
@@ -268,16 +279,6 @@ export default function CreatePoem() {
 
                       setGenre(id);
                     }}
-                  />
-                  <input
-                    type="text"
-                    value={description}
-                    onChange={(e) => {
-                      setDescription(e.target.value);
-                    }}
-                    disabled={loading}
-                    className="w-full inline border-b-2 h-10 border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
-                    placeholder="Add a short description here"
                   />
                 </>
               )}
