@@ -234,7 +234,7 @@ export default function CreatePoem() {
 
 
         <div className="px-8 flex space-x-2">
-          {confirm && (
+          {!confirm && (
             <>
               <button
                 className="h-10 px-6 font-semibold rounded-none bg-black text-white"
