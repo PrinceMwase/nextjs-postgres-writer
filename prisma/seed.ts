@@ -69,7 +69,10 @@ async function main() {
           },
         },
       },
-    });
+    }).then(()=>{
+      console.log("inserted : " + genre);
+      
+    })
   });
 
   console.log("Finished Seeding");
