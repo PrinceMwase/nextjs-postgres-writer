@@ -56,7 +56,7 @@ export default function Infinite({
           notWritersId,
           genreId,
           skip: allPoems.length,
-          take: 2, // Adjust the number of posts to load at once
+          take: 20, // Adjust the number of posts to load at once
         }),
       }).then(async (response) => {
         if (response.status == 200) {

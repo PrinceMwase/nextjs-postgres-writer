@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       html: `Click <a href="${verificationLink}">${verificationLink}</a> to verify your email.`,
     };
     
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email,
         password: await hash(password, 10),
@@ -38,11 +38,16 @@ export async function POST(req: Request) {
             }
           ]
         }
-      },
-      include:{
-        writer: true
       }
-    });
+    }).catch( ()=>{
+      return null
+    } );
+
+    if(!user){
+      
+      return NextResponse.json({ error: "Username already taken" }, { status: 400 });
+
+    }
     mailTransporter(mailOptions).catch(console.error);
     return NextResponse.json({success: "success"}, {status: 200});
   }
