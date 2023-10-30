@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Username already taken" }, { status: 400 });
 
     }
-    mailTransporter(mailOptions).catch(console.error);
+    await mailTransporter(mailOptions).catch(console.error);
     return NextResponse.json({success: "success"}, {status: 200});
   }
 }
