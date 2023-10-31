@@ -45,15 +45,16 @@ export default function Form({ type }: { type: "login" | "register" }) {
           }).then(async (res) => {
             setLoading(false);
             if (res.status === 200) {
-              toast.success("Account created! Check your Email for Verification...");
+              toast.success("Account created! Check your Email for Verification, it might take some time to reach you...");
               setTimeout(() => {
                 router.push("/login");
               }, 1000);
             } else {
+              toast.success("Account creation failed! Try again later...");
               const { error } = await res.json();
               toast.error(error);
             }
-          });
+          }).catch(toast.error);
         }
       }}
       className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"

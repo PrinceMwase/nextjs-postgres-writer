@@ -46,8 +46,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Username already taken" }, { status: 400 });
 
     }
-    const info = await mailTransporter(mailOptions).catch(console.error);
-    console.log("Message sent: %s", info.messageId);
+    mailTransporter(mailOptions).catch(console.error);
     return NextResponse.json({success: "success"}, {status: 200});
   }
 }
