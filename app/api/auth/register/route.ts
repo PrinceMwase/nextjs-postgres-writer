@@ -1,6 +1,4 @@
 import prisma from "@/lib/prisma";
-
-import { NextApiRequest, NextApiResponse } from "next";
 import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 import { generateVerificationToken } from "@/lib/generateVerificationToken";
@@ -48,7 +46,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Username already taken" }, { status: 400 });
 
     }
-    await mailTransporter(mailOptions).catch(console.error);
+    const info = await mailTransporter(mailOptions).catch(console.error);
+    console.log("Message sent: %s", info.messageId);
     return NextResponse.json({success: "success"}, {status: 200});
   }
 }
