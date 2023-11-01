@@ -29,7 +29,6 @@ export async function POST(req: Request) {
         email,
         password: await hash(password, 10),
         verificationToken,
-        emailVerified: true,
         writer:{
           create:[
             {

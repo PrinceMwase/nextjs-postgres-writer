@@ -48,11 +48,11 @@ export const config = {
           throw new Error("Invalid username or password");
         }
 
-        if (user.emailVerified === false) {
-          throw new Error(
-            "Your Email is not verified, check your inbox or spam folder"
-          );
-        }
+        // if (user.emailVerified === false) {
+        //   throw new Error(
+        //     "Your Email is not verified, check your inbox or spam folder"
+        //   );
+        // }
 
         // if user doesn't exist or password doesn't match
         if (!(await compare(password, user.password))) {
