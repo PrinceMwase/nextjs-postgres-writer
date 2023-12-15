@@ -1,11 +1,6 @@
-npx prisma migrate diff \
---from-empty \
---to-schema-datamodel prisma/schema.prisma \
---script > prisma/migrations/0_init/migration.sql
+A Web App for People who write Poems
 
-TODO: add maglite font
-
-poem GENRES
+## poem GENRES
 
 ​allegory​ - A narrative with two levels of meaning, one stated and one unstated.
 ​aubade​
